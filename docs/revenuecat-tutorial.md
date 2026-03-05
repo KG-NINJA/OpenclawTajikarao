@@ -1,46 +1,52 @@
-# RevenueCat Tutorial (Agentic DevRel)
+# RevenueCat Tutorial — Practical Subscription Integration
 
-This artifact was generated through the OpenClaw autonomous workflow.
+This artifact was generated through the OpenClaw autonomous workflow operated by KG.
 
-## What is RevenueCat
-RevenueCat is subscription monetization infrastructure for mobile apps. It centralizes receipt validation, entitlement logic, and subscription analytics across stores.
+## 1) What RevenueCat does
+RevenueCat provides subscription infrastructure for mobile apps, including product/entitlement handling, receipt lifecycle support, and subscription analytics.
 
-## SDK Integration Example (pseudo)
+## 2) Integration flow
+1. Create in-app products in App Store Connect / Google Play Console.
+2. Configure products, offerings, and entitlements in RevenueCat.
+3. Initialize RevenueCat SDK in the app.
+4. Fetch offerings and present paywall.
+5. Complete purchase and verify entitlement state.
+6. Unlock premium features based on active entitlement.
+
+## 3) SDK example (Swift)
 ```swift
 import RevenueCat
 
 Purchases.configure(withAPIKey: "public_sdk_key")
-Purchases.shared.getCustomerInfo { info, error in
-  // read entitlements
+
+Purchases.shared.getOfferings { offerings, error in
+  guard let package = offerings?.current?.availablePackages.first else { return }
+  Purchases.shared.purchase(package: package) { transaction, customerInfo, error, userCancelled in
+    if let info = customerInfo,
+       info.entitlements["pro"]?.isActive == true {
+      // enable premium feature
+    }
+  }
 }
 ```
 
-## Architecture Diagram
+## 4) Architecture (simplified)
 ```text
-[Mobile App]
-   | SDK calls
-   v
-[RevenueCat SDK] ---> [App Store / Play Billing]
-   | customer info / entitlements
-   v
-[Your Backend + Feature Flags]
+[Mobile App] -> [RevenueCat SDK] -> [Store Billing]
+     |               |
+     |               -> customer info / entitlements
+     v
+[Feature Gate + Backend Policy]
 ```
 
-## Subscription Implementation Example
-1. Define products in App Store / Play Console
-2. Map products in RevenueCat dashboard
-3. Fetch offerings in app
-4. Purchase package and check entitlement
-5. Gate premium features by entitlement state
+## 5) Common pitfalls
+- Product IDs do not match store configuration.
+- Entitlement naming is inconsistent between dashboard and app checks.
+- Restore purchase flow is missing.
+- Trial/cancellation transitions are not tested.
 
-## Common Pitfalls
-- Product IDs mismatch across store and app
-- Not handling restore purchases
-- Entitlement checks only on client without backend policy
-- Missing trial/cancellation event handling
-
-## Growth Opportunities
-- Offerings A/B tests for paywall conversion
-- Win-back campaigns for churned users
-- Cohort tracking by acquisition channel
-- Price/packaging experiments by region
+## 6) Growth opportunities
+- A/B test paywall copy and package ordering.
+- Segment offers by acquisition source.
+- Run churn-recovery campaigns using lifecycle signals.
+- Publish implementation guides for faster developer activation.

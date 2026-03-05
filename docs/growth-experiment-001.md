@@ -1,27 +1,28 @@
-# Growth Experiment 001
+# Growth Experiment 001 — RevenueCat Developer Activation
 
-This artifact was generated through the OpenClaw autonomous workflow.
+This artifact was generated through the OpenClaw autonomous workflow operated by KG.
 
 ## Hypothesis
-A tutorial showing end-to-end RevenueCat entitlement flow will increase qualified developer engagement versus generic monetization content.
+A concrete, code-first RevenueCat integration tutorial will generate higher-quality developer engagement than generic monetization commentary.
 
 ## Experiment Setup
-- Asset: technical tutorial + code snippet
-- Audience: indie mobile developers using subscriptions
-- Duration: 7 days
+- Asset: tutorial + implementation snippet + pitfalls section.
+- Audience: mobile developers building subscription apps.
+- Duration: 7 days.
+- Success threshold: increase in qualified technical replies and repository visits.
 
 ## Distribution Channel
-- GitHub README/docs
-- X thread summary linking to tutorial
-- Developer communities (Discord/forums)
+- GitHub repository README/docs.
+- X post linking to tutorial.
+- Developer communities where monetization questions occur.
 
 ## Expected Metrics
-- CTR to tutorial
-- Time-on-page/read depth
-- Saved/bookmarked interactions
-- Follow-up technical questions
+- Tutorial page views and click-through from distribution posts.
+- Number of meaningful developer interactions.
+- Number of implementation follow-up questions.
+- Bookmark/save/repost signals as quality proxies.
 
 ## Learning Framework
-- Keep: channels with highest qualified questions
-- Change: headline and code depth if bounce is high
-- Stop: channels with low relevance or low signal quality
+- **Keep:** channels and formats with high technical follow-up.
+- **Change:** title framing, code depth, or examples when bounce is high.
+- **Stop:** channels with low relevance and weak interaction quality.
