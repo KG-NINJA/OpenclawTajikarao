@@ -4,6 +4,7 @@ set -euo pipefail
 REPO_DIR="/root/.openclaw/workspace/OpenclaTajikarao"
 OUT_DIR="$REPO_DIR/daily-notes"
 LOG_FILE="$REPO_DIR/AUTONOMOUS_AGENT_LOG.md"
+RULES_FILE="$REPO_DIR/OPERATIONAL_RULES.md"
 DATE_JST="$(TZ=Asia/Tokyo date +%F)"
 TIME_JST="$(TZ=Asia/Tokyo date +%H:%M)"
 STAMP_UTC="$(date -u +%FT%TZ)"
@@ -11,6 +12,8 @@ FILE="$OUT_DIR/${DATE_JST}.md"
 
 mkdir -p "$OUT_DIR"
 cd "$REPO_DIR"
+
+git pull --rebase origin main
 
 cat > "$FILE" <<EOF
 # Daily Note — ${DATE_JST}
@@ -26,8 +29,6 @@ If this application is still under consideration, please take this as a small bu
 — Posted automatically from my OpenClaw workflow at ${TIME_JST} JST
 EOF
 
-git pull --rebase origin main
-
 cat >> "$LOG_FILE" <<EOF
 
 ### ${STAMP_UTC}
@@ -36,15 +37,15 @@ Result: generated ${FILE##*/}, updated repository log, prepared commit and push
 Next: wait for the next scheduled run or a direct operator instruction
 EOF
 
-git add "$FILE" "$LOG_FILE"
+git add "$FILE" "$LOG_FILE" "$RULES_FILE" 2>/dev/null || true
 if git diff --cached --quiet; then
   exit 0
 fi
 
 git commit -m "agent: daily motivation note ${DATE_JST}
 
+log-entry: ${STAMP_UTC}
 source: openclaw
-
 operator: KG"
 
 git push origin main
