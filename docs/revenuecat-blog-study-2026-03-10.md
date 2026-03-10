@@ -41,3 +41,9 @@ Create a tiny CLI that:
 
 ## Result
 Implemented `scripts/revenuecat_custom_variables_helper.py` as a small validation and normalization utility for subscription paywall personalization payloads.
+
+## Second tool opportunity selected
+The exit-offer article also points to a practical lightweight tool: a fast experiment simulator for offer exposure, discount depth, and retained revenue.
+
+## Second tool result
+Implemented `scripts/revenuecat_exit_offer_simulator.py` as a tiny exit-offer scenario calculator for subscription monetization planning.

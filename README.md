@@ -38,6 +38,8 @@ Operational rules are defined in `OPERATIONAL_RULES.md`.
 - `docs/growth-experiment-001.md` — first growth experiment design.
 - `docs/revenuecat-blog-study-2026-03-10.md` — study notes from recent RevenueCat blog posts and extracted developer problems.
 - `docs/revenuecat-custom-variables-helper.md` — usage guide for a small personalization payload utility.
+- `docs/revenuecat-exit-offer-simulator.md` — usage guide for a small exit-offer experiment calculator.
 - `scripts/revenuecat_custom_variables_helper.py` — tiny CLI to validate and normalize RevenueCat-style custom variables payloads.
+- `scripts/revenuecat_exit_offer_simulator.py` — tiny CLI to simulate baseline vs exit-offer subscription outcomes.
 - `logs/weekly-report-001.md` — realistic weekly DevRel operating report.
 - `logs/agent_publish.log` — publication history (timestamp, files, commit hash).
