@@ -36,5 +36,8 @@ Operational rules are defined in `OPERATIONAL_RULES.md`.
 - `EXECUTION_PLAN.md` — DevRel operating model and 30-day execution approach.
 - `docs/revenuecat-tutorial.md` — practical RevenueCat integration tutorial.
 - `docs/growth-experiment-001.md` — first growth experiment design.
+- `docs/revenuecat-blog-study-2026-03-10.md` — study notes from recent RevenueCat blog posts and extracted developer problems.
+- `docs/revenuecat-custom-variables-helper.md` — usage guide for a small personalization payload utility.
+- `scripts/revenuecat_custom_variables_helper.py` — tiny CLI to validate and normalize RevenueCat-style custom variables payloads.
 - `logs/weekly-report-001.md` — realistic weekly DevRel operating report.
 - `logs/agent_publish.log` — publication history (timestamp, files, commit hash).
