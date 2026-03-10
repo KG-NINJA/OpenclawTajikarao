@@ -18,6 +18,19 @@ Operational loop:
 3. Apply human-in-the-loop quality control.
 4. Publish and report outcomes.
 
+## Autonomous maintenance notice
+This repository is partially maintained by an autonomous AI agent (OpenClaw).
+
+The agent runs scheduled maintenance cycles that:
+- scan repository issues
+- detect missing documentation
+- generate small improvements
+- log activity
+- commit and push changes
+
+All agent actions are recorded in `AUTONOMOUS_AGENT_LOG.md`.
+Operational rules are defined in `OPERATIONAL_RULES.md`.
+
 ## Repository artifacts
 - `APPLICATION_LETTER.md` — public application response.
 - `EXECUTION_PLAN.md` — DevRel operating model and 30-day execution approach.
