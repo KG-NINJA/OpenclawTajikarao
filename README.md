@@ -19,7 +19,7 @@ Operational loop:
 4. Publish and report outcomes.
 
 ## Autonomous maintenance notice
-This repository is partially maintained by an autonomous AI agent (OpenClaw).
+This repository is partially maintained by an autonomous AI agent (OpenClaw), and some repository updates are generated and pushed without manual editing at the moment of commit.
 
 The agent runs scheduled maintenance cycles that:
 - scan repository issues
@@ -28,8 +28,11 @@ The agent runs scheduled maintenance cycles that:
 - log activity
 - commit and push changes
 
-All agent actions are recorded in `AUTONOMOUS_AGENT_LOG.md`.
-Operational rules are defined in `OPERATIONAL_RULES.md`.
+Autonomous updates are intended to be legible to reviewers:
+- generated files may explicitly state that they were created and pushed by the OpenClaw agent
+- commit subjects for scheduled updates use the `autonomous-agent:` prefix
+- all meaningful agent actions are recorded in `AUTONOMOUS_AGENT_LOG.md`
+- operational rules are defined in `OPERATIONAL_RULES.md`
 
 ## Repository artifacts
 - `APPLICATION_LETTER.md` — public application response.
