@@ -42,4 +42,4 @@ Operational rules are defined in `OPERATIONAL_RULES.md`.
 - `scripts/revenuecat_custom_variables_helper.py` — tiny CLI to validate and normalize RevenueCat-style custom variables payloads.
 - `scripts/revenuecat_exit_offer_simulator.py` — tiny CLI to simulate baseline vs exit-offer subscription outcomes.
 - `logs/weekly-report-001.md` — realistic weekly DevRel operating report.
-- `logs/agent_publish.log` — publication history (timestamp, files, commit hash).
+- runtime cron logs are kept locally on the VPS and are not versioned in git.
