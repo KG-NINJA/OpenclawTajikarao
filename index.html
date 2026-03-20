@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>OpenclawTajikarao Product Drafts</title>
+  <style>
+    :root{--bg:#0b1020;--card:#131a2e;--text:#edf2ff;--muted:#9fb0d6;--line:#24304f;--accent:#6aa3ff;--accent2:#88f0d3}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,Arial,sans-serif;background:linear-gradient(180deg,#0b1020,#10172a 55%,#0b1020);color:var(--text)}
+    .wrap{max-width:980px;margin:0 auto;padding:40px 18px 80px}
+    h1{font-size:40px;line-height:1.05;margin:0 0 12px}
+    .sub{color:var(--muted);max-width:760px;line-height:1.6}
+    .notice{margin-top:18px;padding:14px 16px;border:1px solid var(--line);background:#0f1527;border-radius:14px;color:#cfe0ff}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:28px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+    .tag{display:inline-block;font-size:12px;padding:6px 10px;border-radius:999px;background:#192240;color:#c9daff;margin-bottom:12px}
+    h2{margin:4px 0 10px;font-size:22px}
+    p{margin:0 0 14px;color:var(--muted);line-height:1.55}
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    a.btn{display:inline-block;padding:10px 14px;border-radius:10px;text-decoration:none;color:white;background:var(--accent)}
+    a.ghost{background:transparent;border:1px solid var(--line);color:#dbe6ff}
+    .footer{margin-top:34px;color:var(--muted);font-size:14px;line-height:1.6}
+    code{background:#0d1425;border:1px solid var(--line);padding:2px 6px;border-radius:8px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="tag">OpenClaw Autonomous Product Drafts</div>
+    <h1>Small monetization-ready app drafts</h1>
+    <p class="sub">This page collects tiny product drafts generated from problem signals. The goal is speed: one practical app, one landing page, one support link, and one share path that people naturally want to post.</p>
+
+    <div class="notice">
+      This repository is partially maintained by OpenClaw. Some products listed here are generated, committed, and pushed autonomously from problemOS signals.
+    </div>
+
+    <div class="grid">
+      <section class="card">
+        <div class="tag">Live draft</div>
+        <h2>Copilot Change Watch</h2>
+        <p>Turn messy GitHub / Copilot feature observations into a concise change brief. Good for teams that need to track disappearing or reappearing features across plans and dates.</p>
+        <div class="actions">
+          <a class="btn" href="./products/copilot-change-watch/index.html">Open app</a>
+          <a class="ghost btn" href="./products/copilot-change-watch/landing.md">Read landing</a>
+          <a class="ghost btn" href="https://buymeacoffee.com/kgninja" target="_blank" rel="noreferrer">Support KG</a>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="tag">Nightly loop</div>
+        <h2>ProblemOS draft pipeline</h2>
+        <p>Each nightly run can generate one additional simple app draft from top-ranking problemOS signals, keeping the process small, monetizable, and reviewable.</p>
+        <div class="actions">
+          <a class="ghost btn" href="./nightly-products/">Nightly folder</a>
+          <a class="ghost btn" href="./README.md">Repository README</a>
+        </div>
+      </section>
+    </div>
+
+    <div class="footer">
+      <p><strong>Current loop:</strong> problem signal → tiny tool → landing page → support link → tweet-friendly sharing path.</p>
+      <p>If you want the latest repository evidence, see <code>AUTONOMOUS_AGENT_LOG.md</code> in the repo.</p>
+    </div>
+  </div>
+</body>
+</html>

@@ -47,6 +47,9 @@ ProblemOS signals can be turned into small monetizable product drafts in this re
 
 A nightly automation path may generate one simple app draft from top problemOS signals without directly deploying it.
 
+## GitHub Pages entry
+A simple project index is available at the repository root as `index.html` so GitHub Pages can present the current product drafts more clearly.
+
 ## Repository artifacts
 - `APPLICATION_LETTER.md` — public application response.
 - `EXECUTION_PLAN.md` — DevRel operating model and 30-day execution approach.
