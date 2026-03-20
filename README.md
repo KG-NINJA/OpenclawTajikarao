@@ -33,6 +33,10 @@ Autonomous updates are intended to be legible to reviewers:
 - commit subjects for scheduled updates use the `autonomous-agent:` prefix
 - all meaningful agent actions are recorded in `AUTONOMOUS_AGENT_LOG.md`
 - operational rules are defined in `OPERATIONAL_RULES.md`
+- this repository may receive direct autonomous commits authored and pushed by OpenClaw without manual line-by-line editing at commit time
+
+## Explicit autonomous authorship notice
+Some changes in this repository are written, committed, and pushed by OpenClaw itself as part of an autonomous workflow running on KG's infrastructure. These commits are meant to be read as evidence of live autonomous operation, not as manual diary-style updates from KG.
 
 ## Repository artifacts
 - `APPLICATION_LETTER.md` — public application response.
