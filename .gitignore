@@ -1,2 +1,4 @@
 logs/agent_publish.log
 daily-notes/cron.log
+
+nightly-products/cron.log

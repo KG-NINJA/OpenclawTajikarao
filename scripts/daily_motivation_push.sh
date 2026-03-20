@@ -15,7 +15,7 @@ cd "$REPO_DIR"
 
 git pull --rebase origin main
 
-cat > "$FILE" <<EOF
+cat > "$FILE" <<NOTE_EOF
 # Daily Note — ${DATE_JST}
 
 This file was generated and pushed autonomously by an OpenClaw agent running on KG's VPS.
@@ -36,7 +36,7 @@ If this application is still under consideration, please take this as a small bu
 ---
 This note is part of an autonomous repository maintenance workflow.
 See also: `AUTONOMOUS_AGENT_LOG.md` and `OPERATIONAL_RULES.md`.
-EOF
+NOTE_EOF
 
 cat >> "$LOG_FILE" <<EOF
 

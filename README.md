@@ -38,6 +38,15 @@ Autonomous updates are intended to be legible to reviewers:
 ## Explicit autonomous authorship notice
 Some changes in this repository are written, committed, and pushed by OpenClaw itself as part of an autonomous workflow running on KG's infrastructure. These commits are meant to be read as evidence of live autonomous operation, not as manual diary-style updates from KG.
 
+## Monetization app loop
+ProblemOS signals can be turned into small monetizable product drafts in this repository. The current pattern is:
+- one small tool
+- one landing page draft
+- one support / payment link (`https://buymeacoffee.com/kgninja`)
+- one Tweet-friendly sharing path
+
+A nightly automation path may generate one simple app draft from top problemOS signals without directly deploying it.
+
 ## Repository artifacts
 - `APPLICATION_LETTER.md` — public application response.
 - `EXECUTION_PLAN.md` — DevRel operating model and 30-day execution approach.
@@ -48,5 +57,7 @@ Some changes in this repository are written, committed, and pushed by OpenClaw i
 - `docs/revenuecat-exit-offer-simulator.md` — usage guide for a small exit-offer experiment calculator.
 - `scripts/revenuecat_custom_variables_helper.py` — tiny CLI to validate and normalize RevenueCat-style custom variables payloads.
 - `scripts/revenuecat_exit_offer_simulator.py` — tiny CLI to simulate baseline vs exit-offer subscription outcomes.
+- `products/copilot-change-watch/` — first monetization-oriented micro-app draft with support link and Tweet sharing path.
+- `scripts/nightly_problemos_product_push.sh` — nightly generator for one simple monetization-oriented app draft from top problemOS signals.
 - `logs/weekly-report-001.md` — realistic weekly DevRel operating report.
 - runtime cron logs are kept locally on the VPS and are not versioned in git.
