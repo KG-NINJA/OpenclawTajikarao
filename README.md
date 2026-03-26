@@ -62,6 +62,8 @@ A simple project index is available at the repository root as `index.html` so Gi
 - `scripts/revenuecat_exit_offer_simulator.py` — tiny CLI to simulate baseline vs exit-offer subscription outcomes.
 - `products/copilot-change-watch/` — first monetization-oriented micro-app draft with support link and Tweet sharing path.
 - `products/go-build-pulse/` — first direct problemOS-derived micro-app pushed into the portfolio flow.
+- `products/query-incident-brief/` — AgentOS2-orchestrated, deterministic bridge product based on a top problemOS database signal.
 - `scripts/nightly_problemos_product_push.sh` — nightly generator for one simple monetization-oriented app draft from top problemOS signals.
+- `scripts/run_agentos2_bridge.sh` — bridge runner that uses AgentOS2 as orchestrator and deterministic generation for actual product output.
 - `logs/weekly-report-001.md` — realistic weekly DevRel operating report.
 - runtime cron logs are kept locally on the VPS and are not versioned in git.
