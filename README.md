@@ -61,6 +61,7 @@ A simple project index is available at the repository root as `index.html` so Gi
 - `scripts/revenuecat_custom_variables_helper.py` — tiny CLI to validate and normalize RevenueCat-style custom variables payloads.
 - `scripts/revenuecat_exit_offer_simulator.py` — tiny CLI to simulate baseline vs exit-offer subscription outcomes.
 - `products/copilot-change-watch/` — first monetization-oriented micro-app draft with support link and Tweet sharing path.
+- `products/go-build-pulse/` — first direct problemOS-derived micro-app pushed into the portfolio flow.
 - `scripts/nightly_problemos_product_push.sh` — nightly generator for one simple monetization-oriented app draft from top problemOS signals.
 - `logs/weekly-report-001.md` — realistic weekly DevRel operating report.
 - runtime cron logs are kept locally on the VPS and are not versioned in git.
