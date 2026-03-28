@@ -1,24 +1,16 @@
-# Go Build Pulse
+# Go Compilation Time Latency
 
 ## Problem
-Go build and test loops slow down incrementally, but teams often do not have a lightweight way to summarize where the time is going.
+Go compilation time latency
 
 ## Why it matters
-When build time pain stays vague, it does not get prioritized. A fast summary makes the pain visible and actionable.
+Developer reported: 'why is google so slow...'
 
 ## Solution
-Go Build Pulse is a tiny browser tool. Paste package timing lines, get a short slowdown brief, and share it instantly.
-
-## Usage example
-Input:
-- ./cmd/api 2.1s
-- ./internal/cache 5.8s
-- ./internal/search 3.9s
-
-Output:
-- total observed build time
-- top slow packages
-- next debugging step
+Turn Go compilation time latency into a clearer, faster workflow.
 
 ## CTA
-Support further development: https://buymeacoffee.com/kgninja
+Support further development: https://buymeacoffee.com/kgninja?product=Go+Compilation+Time+Latency&price=9&currency=USD
+
+## Distribution Post
+I turned a recurring problem into a small paid artifact: Go Compilation Time Latency. If you're dealing with Go compilation time latency, this should save you time. https://buymeacoffee.com/kgninja?product=Go+Compilation+Time+Latency&price=9&currency=USD

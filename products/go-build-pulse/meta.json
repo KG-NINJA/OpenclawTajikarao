@@ -1,12 +1,12 @@
 {
+  "source": "problemOS+paypal-plugin",
+  "problem": "Go compilation time latency",
+  "score": 0.75108,
+  "fitness": 3.3,
+  "conversion_rate": 0.2276,
   "product": "go-build-pulse",
-  "type": "single-file html/js",
-  "problem": "Go general issue",
-  "fitness": 2.1,
-  "conversion_rate": 0.3889,
-  "score": 0.81669,
-  "monetization_link": "https://buymeacoffee.com/kgninja",
-  "share_mode": "tweet-intent",
-  "generated_at": "2026-03-26T13:30:00Z",
-  "source": "problemOS"
+  "generated_at": "2026-03-28T07:24:02Z",
+  "payment_link": "https://buymeacoffee.com/kgninja?product=Go+Compilation+Time+Latency&price=9&currency=USD",
+  "distribution_post": "I turned a recurring problem into a small paid artifact: Go Compilation Time Latency. If you're dealing with Go compilation time latency, this should save you time. https://buymeacoffee.com/kgninja?product=Go+Compilation+Time+Latency&price=9&currency=USD",
+  "offer_title": "Go Compilation Time Latency"
 }
