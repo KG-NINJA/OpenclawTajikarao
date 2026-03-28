@@ -1,0 +1,19 @@
+{
+  "product_name": "Go Build Pulse",
+  "core_feature": "Parses pasted build timing data into a ranked slowdown brief",
+  "input_type": "pasted build or test timing text",
+  "output_type": "single-screen slowdown summary with next actions",
+  "user_flow": [
+    "paste timing data",
+    "click analyze",
+    "review ranked slowdown brief",
+    "copy/share result"
+  ],
+  "mvp_scope": [
+    "single HTML file",
+    "paste input",
+    "timing parser",
+    "top slow steps",
+    "estimated time-loss summary"
+  ]
+}

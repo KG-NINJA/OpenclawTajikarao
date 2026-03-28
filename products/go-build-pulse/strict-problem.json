@@ -1,0 +1,13 @@
+{
+  "who": "backend Go developer using repeated build and test loops",
+  "situation": "local development plus CI pipelines for Go services",
+  "pain": "Slow Go compilation in development pipelines",
+  "current_cost": {
+    "time_loss_per_event": "8 minutes",
+    "frequency_per_day": "6",
+    "estimated_time_loss_per_day": "48 minutes"
+  },
+  "impact": "48 minutes of development time are lost per day",
+  "desired_state": "backend Go developer using repeated build and test loops gets faster iteration with materially lower build feedback delay",
+  "monetization_signal": "backend Go developer using repeated build and test loops may pay for a tool that reduces or explains a daily 48-minute productivity drag"
+}

@@ -5,8 +5,15 @@
   "fitness": 3.3,
   "conversion_rate": 0.2276,
   "product": "go-build-pulse",
-  "generated_at": "2026-03-28T07:24:02Z",
+  "generated_at": "2026-03-28T07:42:39Z",
   "payment_link": "https://buymeacoffee.com/kgninja?product=Go+Compilation+Time+Latency&price=9&currency=USD",
   "distribution_post": "I turned a recurring problem into a small paid artifact: Go Compilation Time Latency. If you're dealing with Go compilation time latency, this should save you time. https://buymeacoffee.com/kgninja?product=Go+Compilation+Time+Latency&price=9&currency=USD",
-  "offer_title": "Go Compilation Time Latency"
+  "offer_title": "Go Compilation Time Latency",
+  "monetization_gate": {
+    "pass": true,
+    "score": 4,
+    "reasons": [
+      "buyer too generic"
+    ]
+  }
 }

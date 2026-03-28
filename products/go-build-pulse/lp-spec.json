@@ -1,0 +1,10 @@
+{
+  "headline": "Reduce 48 minutes of build-related time loss for backend Go developer using repeated build and test loops",
+  "subheadline": "Structured visibility into slow go compilation in development pipelines during local development plus CI pipelines for Go services",
+  "target_user": "backend Go developer using repeated build and test loops",
+  "pain_summary": "48 minutes of development time are lost per day",
+  "solution_promise": "backend Go developer using repeated build and test loops gets faster iteration with materially lower build feedback delay",
+  "value_proposition": "Turn recurring build delay into measurable time savings and clearer optimization priorities.",
+  "cta": "Paste build timing data and get an immediate optimization brief",
+  "pricing_hint": "$9-$19"
+}
