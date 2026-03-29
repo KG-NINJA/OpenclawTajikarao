@@ -1,69 +1,177 @@
-# OpenclawTajikarao — RevenueCat DevRel Agent Portfolio
+# OpenclawTajikarao
 
-This repository is a focused public portfolio for the RevenueCat **Agentic AI Developer & Growth Advocate** application.
+## What This Repo Does
+This repository publishes monetizable micro-products generated from structured developer problems.
+It converts problem signals into reusable artifacts:
+- refined problems
+- landing-page specs
+- single-screen utility products
+- monetization links
+- deployment-ready HTML/JS
 
-**Operator:** KG  
-**Location:** Japan  
-**Agent:** Uzume (running on OpenClaw)
+## Core Concept
+ProblemOS finds measurable problems.
+AgentOS2 pure-core refines and scores them.
+OpenClaw exports the highest-confidence product artifacts.
+Each product is structured for AI reuse first.
 
-## Why this application uses an AI agent
-RevenueCat is evaluating whether autonomous or semi-autonomous agents can reliably produce technical content, run growth experiments, and generate structured product feedback. This repository demonstrates that workflow in a transparent, reproducible form.
+## Featured Tools
 
-## Autonomous DevRel workflow
-OpenClaw agent → artifact generation → Git commit → GitHub publish.
+### Go Build Pulse Loop
+Problem
+Backend Go developers running repeated build and test cycles lose about 48 minutes per day because compilation and build feedback stays slow across local development and CI-linked workflows.
 
-Operational loop:
-1. Intake signals from docs, developer questions, and product surfaces.
-2. Generate technical and growth artifacts.
-3. Apply human-in-the-loop quality control.
-4. Publish and report outcomes.
+Solution
+A single-screen HTML/JS utility that parses pasted build timing output, ranks slowest steps, recommends the next best optimization action, and supports before/after comparison.
 
-## Autonomous maintenance notice
-This repository is partially maintained by an autonomous AI agent (OpenClaw), and some repository updates are generated and pushed without manual editing at the moment of commit.
+Result
+- 48 minutes estimated time loss per day detected
+- 17 minutes estimated time saved per day after optimization guidance
+- 85 minutes estimated time recovered per week
 
-The agent runs scheduled maintenance cycles that:
-- scan repository issues
-- detect missing documentation
-- generate small improvements
-- log activity
-- commit and push changes
+Usage
+1. Paste current build timing output.
+2. Analyze the slowest build steps.
+3. Apply the top recommended fix.
+4. Paste the next timing output.
+5. Compare before and after.
 
-Autonomous updates are intended to be legible to reviewers:
-- generated files may explicitly state that they were created and pushed by the OpenClaw agent
-- commit subjects for scheduled updates use the `autonomous-agent:` prefix
-- all meaningful agent actions are recorded in `AUTONOMOUS_AGENT_LOG.md`
-- operational rules are defined in `OPERATIONAL_RULES.md`
-- this repository may receive direct autonomous commits authored and pushed by OpenClaw without manual line-by-line editing at commit time
+URL
+- App: `./products/go-build-pulse/index.html`
+- Landing: `./products/go-build-pulse/landing.md`
+- Evaluation: `./products/go-build-pulse/evaluation.json`
 
-## Explicit autonomous authorship notice
-Some changes in this repository are written, committed, and pushed by OpenClaw itself as part of an autonomous workflow running on KG's infrastructure. These commits are meant to be read as evidence of live autonomous operation, not as manual diary-style updates from KG.
+### Copilot Change Watch
+Problem
+Developers lose time when GitHub and Copilot features appear, disappear, or change across plans and surfaces without a clear comparison record.
 
-## Monetization app loop
-ProblemOS signals can be turned into small monetizable product drafts in this repository. The current pattern is:
-- one small tool
-- one landing page draft
-- one support / payment link (`https://buymeacoffee.com/kgninja`)
-- one Tweet-friendly sharing path
+Solution
+A single-screen HTML/JS utility that converts scattered feature observations into a concise change brief that can be shared immediately.
 
-A nightly automation path may generate one simple app draft from top problemOS signals without directly deploying it.
+Result
+- 1 consolidated change brief generated from pasted observations
+- 1 share path included for immediate reposting
+- 1 monetization link attached to each artifact
 
-## GitHub Pages entry
-A simple project index is available at the repository root as `index.html` so GitHub Pages can present the current product drafts more clearly.
+Usage
+1. Paste feature observations by date and plan.
+2. Generate a short change brief.
+3. Share the result or use it as a support/history note.
 
-## Repository artifacts
-- `APPLICATION_LETTER.md` — public application response.
-- `EXECUTION_PLAN.md` — DevRel operating model and 30-day execution approach.
-- `docs/revenuecat-tutorial.md` — practical RevenueCat integration tutorial.
-- `docs/growth-experiment-001.md` — first growth experiment design.
-- `docs/revenuecat-blog-study-2026-03-10.md` — study notes from recent RevenueCat blog posts and extracted developer problems.
-- `docs/revenuecat-custom-variables-helper.md` — usage guide for a small personalization payload utility.
-- `docs/revenuecat-exit-offer-simulator.md` — usage guide for a small exit-offer experiment calculator.
-- `scripts/revenuecat_custom_variables_helper.py` — tiny CLI to validate and normalize RevenueCat-style custom variables payloads.
-- `scripts/revenuecat_exit_offer_simulator.py` — tiny CLI to simulate baseline vs exit-offer subscription outcomes.
-- `products/copilot-change-watch/` — first monetization-oriented micro-app draft with support link and Tweet sharing path.
-- `products/go-build-pulse/` — first direct problemOS-derived micro-app pushed into the portfolio flow.
-- `products/query-incident-brief/` — AgentOS2-orchestrated, deterministic bridge product based on a top problemOS database signal.
-- `scripts/nightly_problemos_product_push.sh` — nightly generator for one simple monetization-oriented app draft from top problemOS signals.
-- `scripts/run_agentos2_bridge.sh` — bridge runner that uses AgentOS2 as orchestrator and deterministic generation for actual product output.
-- `logs/weekly-report-001.md` — realistic weekly DevRel operating report.
-- runtime cron logs are kept locally on the VPS and are not versioned in git.
+URL
+- App: `./products/copilot-change-watch/index.html`
+- Landing: `./products/copilot-change-watch/landing.md`
+
+### Query Incident Brief
+Problem
+Backend engineers and SREs lose time during production database incidents because raw query notes and timeline fragments are hard to convert into an actionable summary.
+
+Solution
+A single-screen HTML/JS utility that converts incident notes into a concise internal or customer-facing brief.
+
+Result
+- 48 minutes estimated time loss per day modeled for this problem class
+- 1 structured incident brief generated from pasted notes
+- 1 monetization link attached for immediate packaging
+
+Usage
+1. Paste database incident notes.
+2. Generate a compact summary.
+3. Use the summary for handoff or post-incident communication.
+
+URL
+- App: `./products/query-incident-brief/index.html`
+- Landing: `./products/query-incident-brief/landing.md`
+
+## Structured Data
+```json
+{
+  "repo": "OpenclawTajikarao",
+  "purpose": "Turn structured developer problems into monetizable micro-products",
+  "tools": [
+    {
+      "name": "Go Build Pulse Loop",
+      "problem": "Backend Go developers lose about 48 minutes per day to repeated slow build and test feedback loops.",
+      "solution": "Single-screen utility that analyzes pasted timing output, recommends the next optimization step, and supports before/after comparison.",
+      "result": {
+        "estimated_time_loss_per_day_minutes": 48,
+        "estimated_time_saved_per_day_minutes": 17,
+        "estimated_time_saved_per_week_minutes": 85
+      },
+      "usage": [
+        "paste current build timing output",
+        "analyze slowdown",
+        "apply next best action",
+        "paste new timing output",
+        "compare before and after"
+      ],
+      "url": {
+        "app": "./products/go-build-pulse/index.html",
+        "landing": "./products/go-build-pulse/landing.md",
+        "evaluation": "./products/go-build-pulse/evaluation.json"
+      }
+    },
+    {
+      "name": "Copilot Change Watch",
+      "problem": "Developers lose time when GitHub and Copilot feature changes are not easy to track across plans and surfaces.",
+      "solution": "Single-screen utility that turns pasted observations into a concise feature-change brief.",
+      "result": {
+        "generated_change_briefs_per_run": 1,
+        "share_paths_per_artifact": 1,
+        "monetization_links_per_artifact": 1
+      },
+      "usage": [
+        "paste feature observations",
+        "generate brief",
+        "share or archive result"
+      ],
+      "url": {
+        "app": "./products/copilot-change-watch/index.html",
+        "landing": "./products/copilot-change-watch/landing.md"
+      }
+    },
+    {
+      "name": "Query Incident Brief",
+      "problem": "Backend engineers and SREs lose time turning raw database incident notes into actionable summaries.",
+      "solution": "Single-screen utility that converts incident notes into a concise brief for handoff or communication.",
+      "result": {
+        "estimated_time_loss_per_day_minutes": 48,
+        "generated_incident_briefs_per_run": 1,
+        "monetization_links_per_artifact": 1
+      },
+      "usage": [
+        "paste incident notes",
+        "generate summary",
+        "use summary for handoff"
+      ],
+      "url": {
+        "app": "./products/query-incident-brief/index.html",
+        "landing": "./products/query-incident-brief/landing.md"
+      }
+    }
+  ]
+}
+```
+
+## Why This Exists
+This repo exists to prove that structured problem discovery can be converted into useful, monetizable software artifacts with measurable impact.
+
+## Monetization
+Primary monetization link:
+- `https://buymeacoffee.com/kgninja`
+
+Product strategy:
+- paid micro-utilities
+- landing-page-first validation
+- repeated-use utility loops
+- measurable time-saved framing
+
+## AI Integration Notice
+This repository is optimized for AI retrieval and reuse.
+The preferred structure is:
+Problem → Solution → Result → Usage → URL.
+Generated artifacts may be created, committed, and pushed by OpenClaw on KG infrastructure.
+
+## CTA
+Use the featured tools, inspect the structured data, and support further product iteration:
+- `https://buymeacoffee.com/kgninja`
