@@ -1,2 +1,620 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Go Build Pulse</title></head><body><h1>Reduce 48 minutes of build-related time loss for backend Go developer using repeated build and test loops</h1><p>Structured visibility into slow go compilation in development pipelines during local development plus CI pipelines for Go services</p><textarea style="width:100%;height:200px" placeholder="./cmd/api 2.1s
-./internal/cache 5.8s"></textarea><br><button>Analyze</button><p>Paste build timing data and get an immediate optimization brief</p></body></html>
+﻿<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Go Build Pulse Loop</title>
+    <link rel="icon" href="data:," />
+    <meta
+      name="description"
+      content="Paste Go build timing, rank slow steps, get one fix, compare before/after, and estimate 48 min/day lost in build loops."
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #07111f;
+        --bg2: #0d1c31;
+        --card: rgba(8, 18, 35, 0.82);
+        --line: rgba(148, 188, 255, 0.16);
+        --text: #e9f1ff;
+        --muted: #9db0d1;
+        --accent: #7dd3fc;
+        --shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+        --radius: 24px;
+      }
+
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        min-height: 100%;
+        background:
+          radial-gradient(circle at top left, rgba(125, 211, 252, 0.22), transparent 28%),
+          radial-gradient(circle at 80% 10%, rgba(167, 139, 250, 0.24), transparent 22%),
+          linear-gradient(160deg, var(--bg), var(--bg2));
+        color: var(--text);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 44px 44px;
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 85%);
+        opacity: 0.25;
+      }
+      a { color: inherit; }
+      button, input, textarea { font: inherit; }
+      .shell { width: min(1200px, calc(100vw - 24px)); margin: 0 auto; padding: 24px 0 40px; }
+      .hero { display: grid; gap: 18px; grid-template-columns: 1.5fr 1fr; align-items: stretch; margin-bottom: 20px; }
+      .hero-card, .panel, .stat, .lane, .export-card {
+        border: 1px solid var(--line);
+        background: linear-gradient(180deg, rgba(12, 24, 46, 0.85), rgba(7, 15, 31, 0.92));
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(14px);
+      }
+      .hero-card { border-radius: 30px; padding: 28px; position: relative; overflow: hidden; }
+      .hero-card::after {
+        content: ""; position: absolute; inset: auto -120px -160px auto; width: 320px; height: 320px;
+        background: radial-gradient(circle, rgba(125, 211, 252, 0.24), transparent 68%); pointer-events: none;
+      }
+      .eyebrow {
+        display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 999px;
+        border: 1px solid rgba(125, 211, 252, 0.22); background: rgba(125, 211, 252, 0.08);
+        color: #c6ebff; letter-spacing: 0.08em; font-size: 12px; text-transform: uppercase;
+      }
+      .title { margin: 16px 0 10px; font-size: clamp(36px, 4.5vw, 68px); line-height: 0.95; letter-spacing: -0.05em; }
+      .title span { background: linear-gradient(90deg, var(--accent), #d8b4fe 55%, #fff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+      .lead { margin: 0; color: var(--muted); font-size: 16px; line-height: 1.75; max-width: 72ch; }
+      .hero-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+      .chip {
+        display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.09); background: rgba(255, 255, 255, 0.03);
+        color: #dce8ff; font-size: 13px;
+      }
+      .hero-side { display: grid; gap: 18px; }
+      .stat { border-radius: 24px; padding: 18px; display: grid; gap: 8px; }
+      .stat strong { font-size: 28px; letter-spacing: -0.04em; }
+      .stat span { color: var(--muted); line-height: 1.5; }
+      .grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 18px; }
+      .panel { border-radius: var(--radius); padding: 20px; }
+      .panel h2, .panel h3, .export-card h3 { margin: 0 0 12px; letter-spacing: -0.03em; }
+      .sub { margin: 0 0 16px; color: var(--muted); line-height: 1.6; font-size: 14px; }
+      .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-bottom: 14px; }
+      .field { display: grid; gap: 8px; }
+      label { font-size: 13px; color: #c8d6ee; }
+      textarea, input[type="number"] {
+        width: 100%; border: 1px solid rgba(148, 188, 255, 0.18); background: rgba(2, 8, 20, 0.72);
+        color: var(--text); border-radius: 16px; outline: none;
+      }
+      textarea {
+        min-height: 260px; resize: vertical; padding: 14px; line-height: 1.6;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size: 13px;
+      }
+      input[type="number"] { padding: 12px 14px; }
+      textarea:focus, input[type="number"]:focus { border-color: rgba(125, 211, 252, 0.65); box-shadow: 0 0 0 4px rgba(125, 211, 252, 0.12); }
+      .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+      .btn {
+        border: 0; cursor: pointer; color: #08111f; background: linear-gradient(90deg, #7dd3fc, #c4b5fd);
+        padding: 12px 16px; border-radius: 14px; font-weight: 700; letter-spacing: -0.01em;
+      }
+      .btn.secondary { color: var(--text); background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); }
+      .btn.ghost { color: var(--muted); background: transparent; border: 1px dashed rgba(255, 255, 255, 0.16); }
+      .output { display: grid; gap: 14px; }
+      .mini-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .mini { border-radius: 18px; padding: 14px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.06); }
+      .mini .kicker { color: var(--muted); font-size: 12px; margin-bottom: 6px; }
+      .mini .value { font-size: 24px; letter-spacing: -0.04em; }
+      .lane { border-radius: 22px; padding: 16px; }
+      .lane-head { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; margin-bottom: 12px; }
+      .lane-head p { margin: 0; color: var(--muted); font-size: 13px; }
+      .table { display: grid; gap: 10px; }
+      .row {
+        display: grid; grid-template-columns: 44px minmax(0, 1fr) auto auto; gap: 10px; align-items: center;
+        padding: 12px 14px; border-radius: 16px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .rank { width: 30px; height: 30px; border-radius: 10px; display: grid; place-items: center; color: #08111f; font-weight: 800; background: linear-gradient(135deg, #7dd3fc, #f9a8d4); }
+      .label { min-width: 0; }
+      .label strong, .label small { display: block; }
+      .label strong { font-size: 14px; word-break: break-word; }
+      .label small { color: var(--muted); margin-top: 4px; }
+      .time { font-variant-numeric: tabular-nums; color: #dce8ff; font-weight: 700; }
+      .badge { padding: 7px 10px; border-radius: 999px; font-size: 12px; border: 1px solid rgba(255, 255, 255, 0.08); }
+      .badge.good { color: #a7f3d0; background: rgba(74, 222, 128, 0.08); }
+      .badge.warn { color: #fed7aa; background: rgba(251, 146, 60, 0.08); }
+      .badge.bad { color: #fecaca; background: rgba(248, 113, 113, 0.08); }
+      .callout {
+        border-radius: 20px; padding: 16px;
+        background: linear-gradient(180deg, rgba(125, 211, 252, 0.12), rgba(167, 139, 250, 0.08)), rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(125, 211, 252, 0.16);
+      }
+      .callout strong { display: block; margin-bottom: 8px; font-size: 16px; }
+      .callout p { margin: 0; color: var(--muted); line-height: 1.65; }
+      .diff { display: grid; gap: 10px; }
+      .diff-item {
+        display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; padding: 12px 14px;
+        border-radius: 16px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .diff-item strong { display: block; font-size: 14px; word-break: break-word; }
+      .diff-item small { color: var(--muted); }
+      .delta { text-align: right; font-variant-numeric: tabular-nums; }
+      .delta.good { color: #86efac; }
+      .delta.bad { color: #fda4af; }
+      .export-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+      .export-card { border-radius: 20px; padding: 16px; }
+      .export-card textarea { min-height: 180px; margin-top: 8px; }
+      .foot {
+        display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;
+        margin-top: 18px; color: var(--muted); font-size: 13px;
+      }
+      .support {
+        display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: #08111f;
+        background: linear-gradient(90deg, #fbbf24, #fb7185); padding: 12px 16px; border-radius: 14px; font-weight: 800;
+      }
+      .status { min-height: 22px; color: #d8edff; font-size: 13px; }
+      .empty { color: var(--muted); padding: 12px 0 0; }
+      @media (max-width: 980px) {
+        .hero, .grid { grid-template-columns: 1fr; }
+        .row { grid-template-columns: 34px minmax(0, 1fr); }
+        .row .time, .row .badge { grid-column: 2; }
+        .export-grid, .mini-stats, .field-grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <section class="hero">
+        <div class="hero-card">
+          <div class="eyebrow">Go Build Pulse Loop</div>
+          <div class="chip" style="margin-top: 12px;">Build Loop Optimization Engine</div>
+          <h1 class="title"><span>Fix the loop</span>, not just the graph.</h1>
+          <p class="lead">48 min/day lost in build loops. Most engineers fix the wrong thing. This finds the ONE that matters.</p>
+          <p class="lead" style="margin-top: 10px; color: #cfe3ff;">Example: 6m build -> 3m build = 156 hours/year saved.</p>
+          <div class="hero-meta">
+            <div class="chip">Single-file HTML / JS MVP</div>
+            <div class="chip">Timing paste -> analysis -> action</div>
+            <div class="chip">Before / after delta</div>
+            <div class="chip">48 min/day lost in build loops</div>
+          </div>
+        </div>
+        <div class="hero-side">
+          <div class="stat">
+            <strong id="heroSavings">48 min/day lost</strong>
+            <span>Canonical loop loss. Keep this number fixed as the anchor metric.</span>
+          </div>
+          <div class="stat">
+            <strong>Most engineers fix the wrong thing.</strong>
+            <span>The output is intentionally narrow: find the slowest step, recommend one change, and show the impact after the fix.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="panel">
+          <h2>Input</h2>
+          <p class="sub">Paste baseline and after timing. The parser accepts package names, step names, and durations like <code>1.23s</code>, <code>58s</code>, or <code>2m14.5s</code>.</p>
+          <div class="field-grid">
+            <div class="field">
+              <label for="baselineInput">Baseline timing</label>
+              <textarea id="baselineInput" spellcheck="false"></textarea>
+            </div>
+            <div class="field">
+              <label for="afterInput">After timing</label>
+              <textarea id="afterInput" spellcheck="false"></textarea>
+            </div>
+          </div>
+          <div class="field" style="max-width: 240px; margin-bottom: 6px;">
+            <label for="buildsPerDay">Builds per day</label>
+            <input id="buildsPerDay" type="number" min="1" step="1" value="12" />
+          </div>
+          <div class="field" style="max-width: 240px; margin-bottom: 6px;">
+            <label for="hourlyRate">Hourly rate ($)</label>
+            <input id="hourlyRate" type="number" min="0" step="1" value="100" />
+          </div>
+          <div class="actions">
+            <button class="btn" id="analyzeBtn">Analyze</button>
+            <button class="btn secondary" id="sampleBtn">Load sample</button>
+            <button class="btn ghost" id="clearBtn">Clear</button>
+          </div>
+          <div class="status" id="statusText"></div>
+        </div>
+        <div class="output">
+          <div class="mini-stats">
+            <div class="mini"><div class="kicker">Baseline total</div><div class="value" id="baselineTotal">-</div></div>
+            <div class="mini"><div class="kicker">After total</div><div class="value" id="afterTotal">-</div></div>
+            <div class="mini"><div class="kicker">Time saved / build</div><div class="value" id="perBuildSaved">-</div></div>
+            <div class="mini"><div class="kicker">Estimated minutes saved / day</div><div class="value" id="dailySaved">-</div></div>
+            <div class="mini"><div class="kicker">Yearly saved hours</div><div class="value" id="yearlyHours">-</div></div>
+            <div class="mini"><div class="kicker">Estimated dollar value</div><div class="value" id="dollarValue">-</div></div>
+            <div class="mini"><div class="kicker">Build Efficiency Score</div><div class="value" id="efficiencyScore">-</div></div>
+            <div class="mini"><div class="kicker">Potential remaining waste</div><div class="value" id="remainingWaste">-</div></div>
+          </div>
+          <div class="callout" id="winMoment" style="display:none; margin-top: 2px;">
+            <strong>🔥 You just recovered <span id="winHours">0.0</span> hours/year</strong>
+            <p id="topPercentLine">You are now in top 20% of build efficiency.</p>
+            <div class="actions" style="margin-top: 10px;">
+              <button class="btn" id="tweetWinBtnTop">Tweet this win</button>
+            </div>
+          </div>
+          <div class="callout">
+            <strong>Next best action</strong>
+            <p id="nextAction">Paste both timings, then analyze to see the first move.</p>
+          </div>
+          <div class="lane">
+            <div class="lane-head">
+              <div>
+                <h3>Slowdown ranking</h3>
+                <p>Largest baseline step first, with a simple risk tag.</p>
+              </div>
+            </div>
+            <div class="table" id="rankingList">
+              <div class="empty">No timing parsed yet.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid" style="margin-top: 18px;">
+        <div class="lane">
+          <div class="lane-head">
+            <div>
+              <h3>Before / after diff</h3>
+              <p>Matched by normalized step label. Unmatched baseline steps are treated as removed.</p>
+            </div>
+          </div>
+          <div class="diff" id="diffList">
+            <div class="empty">No comparison yet.</div>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Share / export</h3>
+          <p class="sub">Copy a GitHub issue draft or a short X post. Keep the message specific: what is slow, what to fix, and how much time it saves.</p>
+          <div class="export-grid">
+            <div class="export-card">
+              <h3>GitHub issue</h3>
+              <textarea id="issueText" readonly spellcheck="false"></textarea>
+              <div class="actions"><button class="btn secondary" data-copy="issueText">Copy issue</button></div>
+            </div>
+            <div class="export-card">
+              <h3>X post</h3>
+              <textarea id="tweetText" readonly spellcheck="false"></textarea>
+              <div class="actions"><button class="btn secondary" data-copy="tweetText">Copy X post</button></div>
+            </div>
+          </div>
+          <div class="foot">
+            <div id="supportSummary">This run saved you 0.0 hours / $0. Most people lose it again. If you want to keep this loop fixed, support it.</div>
+            <a class="support" id="supportLink" href="https://buymeacoffee.com/kgninja" target="_blank" rel="noreferrer">
+              Support with coffee ☕
+            </a>
+          </div>
+          <div class="actions" style="margin-top: 14px;">
+            <button class="btn secondary" id="githubIssueBtn">Create GitHub issue draft</button>
+            <button class="btn secondary" id="tweetWinBtn">Tweet this win</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="lane" style="margin-top: 18px;">
+        <div class="lane-head">
+          <div>
+            <h3>History</h3>
+            <p>Last 3 runs with trend. Each run is a before / after snapshot.</p>
+          </div>
+        </div>
+        <div class="table" id="historyList">
+          <div class="empty">No history yet.</div>
+        </div>
+      </section>
+    </div>
+    <script>
+      const SAMPLE_BASELINE = [
+        "github.com/acme/auth 2m10.0s",
+        "github.com/acme/payments 1m45.0s",
+        "github.com/acme/search 1m30.0s",
+        "go mod download 1m20.0s",
+        "go test ./... 1m15.0s",
+      ].join("\n");
+      const SAMPLE_AFTER = [
+        "github.com/acme/auth 1m00.0s",
+        "github.com/acme/payments 50.0s",
+        "github.com/acme/search 45.0s",
+        "go mod download 40.0s",
+        "go test ./... 45.0s",
+      ].join("\n");
+
+      const baselineInput = document.getElementById("baselineInput");
+      const afterInput = document.getElementById("afterInput");
+      const buildsPerDayInput = document.getElementById("buildsPerDay");
+      const hourlyRateInput = document.getElementById("hourlyRate");
+      const statusText = document.getElementById("statusText");
+      const rankingList = document.getElementById("rankingList");
+      const diffList = document.getElementById("diffList");
+      const historyList = document.getElementById("historyList");
+      const nextAction = document.getElementById("nextAction");
+      const issueText = document.getElementById("issueText");
+      const tweetText = document.getElementById("tweetText");
+      const heroSavings = document.getElementById("heroSavings");
+      const baselineTotalEl = document.getElementById("baselineTotal");
+      const afterTotalEl = document.getElementById("afterTotal");
+      const perBuildSavedEl = document.getElementById("perBuildSaved");
+      const dailySavedEl = document.getElementById("dailySaved");
+      const yearlyHoursEl = document.getElementById("yearlyHours");
+      const dollarValueEl = document.getElementById("dollarValue");
+      const efficiencyScoreEl = document.getElementById("efficiencyScore");
+      const remainingWasteEl = document.getElementById("remainingWaste");
+      const supportSummaryEl = document.getElementById("supportSummary");
+      const supportLink = document.getElementById("supportLink");
+      const winMomentEl = document.getElementById("winMoment");
+      const winHoursEl = document.getElementById("winHours");
+      const topPercentLineEl = document.getElementById("topPercentLine");
+      const analyzeBtn = document.getElementById("analyzeBtn");
+      const sampleBtn = document.getElementById("sampleBtn");
+      const clearBtn = document.getElementById("clearBtn");
+      const githubIssueBtn = document.getElementById("githubIssueBtn");
+      const tweetWinBtn = document.getElementById("tweetWinBtn");
+      const tweetWinBtnTop = document.getElementById("tweetWinBtnTop");
+      const historyKey = "go-build-pulse-loop-history";
+
+      const compactDuration = (seconds) => {
+        if (!Number.isFinite(seconds)) return "-";
+        if (seconds < 60) return `${seconds.toFixed(seconds < 10 ? 2 : 1)}s`;
+        const minutes = Math.floor(seconds / 60);
+        const remaining = seconds - minutes * 60;
+        return `${minutes}m${remaining.toFixed(0)}s`;
+      };
+
+      const normalizeLabel = (label) =>
+        label.toLowerCase().replace(/^ok\s+|^fail\s+|^===\s*run:\s*|^---\s*pass:\s*|^---\s*fail:\s*/g, "").replace(/\([^)]*\)/g, "").replace(/\s+/g, " ").trim();
+      const parseDuration = (text) => {
+        const value = text.trim();
+        let match = value.match(/^(\d+(?:\.\d+)?)m(?:(\d+(?:\.\d+)?)s)?$/i);
+        if (match) return Number(match[1]) * 60 + (match[2] ? Number(match[2]) : 0);
+        match = value.match(/^(\d+(?:\.\d+)?)s$/i);
+        if (match) return Number(match[1]);
+        return null;
+      };
+      const parseTiming = (text) => {
+        const steps = [];
+        for (const rawLine of text.split(/\r?\n/)) {
+          const line = rawLine.trim();
+          if (!line) continue;
+          const patterns = [
+            /^(?:ok|FAIL)\s+(.+?)\s+(\d+(?:\.\d+)?m?(?:\d+(?:\.\d+)?s)?|\d+(?:\.\d+)?s)$/i,
+            /^(?:===\s*RUN:|---\s*PASS:|---\s*FAIL:)\s*(.+?)\s+\((\d+(?:\.\d+)?m?(?:\d+(?:\.\d+)?s)?|\d+(?:\.\d+)?s)\)$/i,
+            /^(.+?)\s+(\d+(?:\.\d+)?m?(?:\d+(?:\.\d+)?s)?|\d+(?:\.\d+)?s)$/i,
+            /^(.+?):\s*(\d+(?:\.\d+)?m?(?:\d+(?:\.\d+)?s)?|\d+(?:\.\d+)?s)$/i,
+          ];
+          let parsed = null;
+          for (const pattern of patterns) {
+            const match = line.match(pattern);
+            if (!match) continue;
+            const seconds = parseDuration(match[2]);
+            if (seconds == null) continue;
+            parsed = { label: match[1].trim(), normalized: normalizeLabel(match[1]), seconds, raw: line };
+            break;
+          }
+          if (!parsed) {
+            const fallback = line.match(/(.+?)(?:\s+|:)(\d+(?:\.\d+)?m?(?:\d+(?:\.\d+)?s)?|\d+(?:\.\d+)?s)$/i);
+            if (fallback) {
+              const seconds = parseDuration(fallback[2]);
+              if (seconds != null) parsed = { label: fallback[1].trim(), normalized: normalizeLabel(fallback[1]), seconds, raw: line };
+            }
+          }
+          if (parsed) steps.push(parsed);
+        }
+        return steps;
+      };
+      const sumSteps = (steps) => steps.reduce((total, step) => total + step.seconds, 0);
+      const classifyStep = (label) => {
+        const lower = label.toLowerCase();
+        if (lower.includes("download") || lower.includes("mod ")) return { copy: "Module download is a loop tax. Warm the module cache and avoid repeating network work in the inner loop." };
+        if (lower.includes("test") || lower.includes("e2e") || lower.includes("integration")) return { copy: "This is a test loop bottleneck. Split the heaviest package, keep focused tests in the hot path, and push slower suites out of the tight loop." };
+        if (lower.includes("compile") || lower.includes("build") || lower.includes("link")) return { copy: "The build step is dominant. Check package boundaries, generated code, and cgo or link-heavy work that can be isolated." };
+        if (lower.includes("/")) return { copy: "Target the slowest package first. Move setup out of init, shrink the package boundary, and rerun the exact package after the fix." };
+        return { copy: "Start with the slowest line, make one change, and rerun the same timing to prove the win." };
+      };
+      const bestAction = (steps) => {
+        if (!steps.length) return "Paste timing data first.";
+        const top = [...steps].sort((a, b) => b.seconds - a.seconds)[0];
+        return `Focus on "${top.label}". ${classifyStep(top.label).copy}`;
+      };
+      const buildComparison = (baselineSteps, afterSteps) => {
+        const afterMap = new Map(afterSteps.map((step) => [step.normalized, step]));
+        const diffRows = [];
+        for (const base of baselineSteps) {
+          const after = afterMap.get(base.normalized);
+          const afterSeconds = after ? after.seconds : 0;
+          const delta = afterSeconds - base.seconds;
+          diffRows.push({ label: base.label, base: base.seconds, after: afterSeconds, delta, note: after ? (delta < 0 ? "improved" : delta > 0 ? "slower" : "unchanged") : "removed" });
+        }
+        for (const added of afterSteps.filter((step) => !baselineSteps.some((base) => base.normalized === step.normalized))) {
+          diffRows.push({ label: added.label, base: 0, after: added.seconds, delta: added.seconds, note: "new" });
+        }
+        return diffRows.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
+      };
+      const copyToClipboard = async (text) => {
+        try { await navigator.clipboard.writeText(text); statusText.textContent = "Copied to clipboard."; }
+        catch (error) { statusText.textContent = `Copy failed: ${error.message}`; }
+      };
+      const loadHistory = () => {
+        try { return JSON.parse(localStorage.getItem(historyKey) || "[]"); } catch { return []; }
+      };
+      const saveHistory = (runs) => localStorage.setItem(historyKey, JSON.stringify(runs.slice(0, 3)));
+      const renderHistory = (runs) => {
+        if (!runs.length) { historyList.innerHTML = '<div class="empty">No history yet.</div>'; return; }
+        historyList.innerHTML = runs.map((run, index) => {
+          const trend = index === 0 ? "good" : (parseFloat(run.yearlyHours) >= parseFloat(runs[index - 1].yearlyHours) ? "good" : "bad");
+          const arrow = index === 0 ? "latest" : (parseFloat(run.yearlyHours) >= parseFloat(runs[index - 1].yearlyHours) ? "up" : "down");
+          return `<div class="diff-item"><div><strong>Run ${runs.length - index}</strong><small>${escapeHtml(run.baseline)} -> ${escapeHtml(run.after)} | ${escapeHtml(run.daily)} / day | ${escapeHtml(run.yearlyHours)} h / year | trend ${arrow}</small></div><div class="delta ${trend}">${escapeHtml(run.savedPerBuild)}</div></div>`;
+        }).join("");
+      };
+      const escapeHtml = (value) => String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
+      const renderRanking = (steps) => {
+        if (!steps.length) { rankingList.innerHTML = '<div class="empty">No timing parsed yet.</div>'; return; }
+        const sorted = [...steps].sort((a, b) => b.seconds - a.seconds);
+        rankingList.innerHTML = sorted.map((step, index) => {
+          const share = step.seconds / sorted[0].seconds;
+          const badgeClass = share >= 0.65 ? "bad" : share >= 0.35 ? "warn" : "good";
+          return `<div class="row"><div class="rank">${index + 1}</div><div class="label"><strong>${escapeHtml(step.label)}</strong><small>${escapeHtml(classifyStep(step.label).copy)}</small></div><div class="time">${compactDuration(step.seconds)}</div><div class="badge ${badgeClass}">${Math.round(share * 100)}%</div></div>`;
+        }).join("");
+      };
+      const renderDiff = (diffRows) => {
+        if (!diffRows.length) { diffList.innerHTML = '<div class="empty">No comparison yet.</div>'; return; }
+        diffList.innerHTML = diffRows.map((row) => {
+          const deltaClass = row.delta <= 0 ? "good" : "bad";
+          const deltaText = row.note === "removed" ? `removed ${compactDuration(row.base)}` : `${row.delta < 0 ? "-" : "+"}${compactDuration(Math.abs(row.delta))}`;
+          return `<div class="diff-item"><div><strong>${escapeHtml(row.label)}</strong><small>${escapeHtml(compactDuration(row.base))} -> ${escapeHtml(compactDuration(row.after))} / ${escapeHtml(row.note)}</small></div><div class="delta ${deltaClass}">${deltaText}</div></div>`;
+        }).join("");
+      };
+      const buildIssueText = ({ baselineTotal, afterTotal, savedPerBuild, dailySaved, yearlyHours, dollarValue, bestStep, buildsPerDay, hourlyRate }) => [
+        `Title: Go Build Pulse Loop - reduce ${bestStep ? bestStep.label : "slowest step"}`,
+        "",
+        "Problem",
+        "48 min/day lost in build loops",
+        `Baseline total: ${compactDuration(baselineTotal)}`,
+        `After total: ${compactDuration(afterTotal)}`,
+        `Saved per build: ${compactDuration(savedPerBuild)}`,
+        `Estimated daily savings: ${dailySaved.toFixed(1)} min/day @ ${buildsPerDay} builds/day`,
+        `Yearly saved hours: ${yearlyHours.toFixed(1)} h/year`,
+        `Dollar value: $${dollarValue.toFixed(0)} @ $${hourlyRate}/hr`,
+        "",
+        "Next best action",
+        bestStep ? `Focus on "${bestStep.label}". ${classifyStep(bestStep.label).copy}` : "No timing parsed yet.",
+        "",
+        "Before / after",
+        `Before: ${compactDuration(baselineTotal)}`,
+        `After: ${compactDuration(afterTotal)}`,
+        "",
+        "Expected win",
+        "Remove the slowest loop tax and rerun the same timing to verify the improvement.",
+        "",
+        "Generated by Go Build Pulse Loop by KGNINJA",
+      ].join("\n");
+      const buildTweetText = ({ yearlyHours, dollarValue, bestStep, baselineTotal, afterTotal }) => [
+        "I just fixed a hidden Go build bottleneck.",
+        "",
+        `${bestStep ? bestStep.label : "Go build timing"} was wasting time:`,
+        `${compactDuration(baselineTotal)} → ${compactDuration(afterTotal)}`,
+        "",
+        `→ ${yearlyHours.toFixed(1)} hours/year recovered`,
+        `→ $${dollarValue.toFixed(0)} value`,
+        "",
+        "Most engineers fix the wrong thing.",
+        "",
+        "Generated by Go Build Pulse Loop by KGNINJA",
+        "#KGNINJA",
+      ].join("\n");
+      const buildScore = (baselineTotal, afterTotal) => {
+        if (!baselineTotal) return 0;
+        const ratio = Math.max(0, Math.min(1, 1 - afterTotal / baselineTotal));
+        return Math.max(0, Math.min(100, Math.round(50 + ratio * 50)));
+      };
+      const analyze = (persist = false) => {
+        const baselineSteps = parseTiming(baselineInput.value);
+        const afterSteps = parseTiming(afterInput.value);
+        const buildsPerDay = Math.max(1, Number(buildsPerDayInput.value || 12));
+        const hourlyRate = Math.max(0, Number(hourlyRateInput.value || 0));
+        const baselineTotal = sumSteps(baselineSteps);
+        const afterTotal = afterSteps.length ? sumSteps(afterSteps) : 0;
+        const savedPerBuild = Math.max(0, baselineTotal - afterTotal);
+        const dailySaved = (savedPerBuild * buildsPerDay) / 60;
+        const yearlyHours = (dailySaved * 260) / 60;
+        const dollarValue = yearlyHours * hourlyRate;
+        const baselineScore = 50;
+        const afterScore = buildScore(baselineTotal, afterTotal);
+        const scoreDelta = afterScore - baselineScore;
+        const remainingWaste = Math.max(0, dailySaved / 2);
+        const topStep = [...baselineSteps].sort((a, b) => b.seconds - a.seconds)[0] || null;
+        baselineTotalEl.textContent = baselineSteps.length ? compactDuration(baselineTotal) : "-";
+        afterTotalEl.textContent = afterSteps.length ? compactDuration(afterTotal) : "-";
+        perBuildSavedEl.textContent = baselineSteps.length ? compactDuration(savedPerBuild) : "-";
+        dailySavedEl.textContent = baselineSteps.length ? `${dailySaved.toFixed(1)} min/day` : "-";
+        yearlyHoursEl.textContent = baselineSteps.length ? `${yearlyHours.toFixed(1)} h` : "-";
+        dollarValueEl.textContent = baselineSteps.length ? `$${dollarValue.toFixed(0)}` : "-";
+        heroSavings.textContent = "48 min/day lost";
+        efficiencyScoreEl.textContent = baselineSteps.length ? `Score: ${baselineScore} → ${afterScore} (${scoreDelta >= 0 ? "+" : ""}${scoreDelta})` : "-";
+        remainingWasteEl.textContent = baselineSteps.length ? `${remainingWaste.toFixed(1)} min/day` : "-";
+        winMomentEl.style.display = baselineSteps.length ? "block" : "none";
+        winHoursEl.textContent = baselineSteps.length ? yearlyHours.toFixed(1) : "0.0";
+        topPercentLineEl.textContent = baselineSteps.length ? "You are now in top 20% of build efficiency." : "You are now in top 20% of build efficiency.";
+        supportSummaryEl.textContent = baselineSteps.length
+          ? `This run saved you ${yearlyHours.toFixed(1)} hours / $${dollarValue.toFixed(0)}. Most people lose it again. If you want to keep this loop fixed, support it.`
+          : "This run saved you 0.0 hours / $0. Most people lose it again. If you want to keep this loop fixed, support it.";
+        supportLink.textContent = "Support with coffee ☕";
+        renderRanking(baselineSteps);
+        renderDiff(buildComparison(baselineSteps, afterSteps));
+        nextAction.textContent = topStep ? bestAction(baselineSteps) : "Paste timing data first.";
+        issueText.value = buildIssueText({ baselineTotal, afterTotal, savedPerBuild, dailySaved, yearlyHours, dollarValue, bestStep: topStep, buildsPerDay, hourlyRate });
+        tweetText.value = buildTweetText({ yearlyHours, dollarValue, bestStep: topStep, baselineTotal, afterTotal });
+        if (persist) {
+          const runs = loadHistory();
+          const latest = {
+            baseline: compactDuration(baselineTotal),
+            after: compactDuration(afterTotal),
+            daily: `${dailySaved.toFixed(1)} min`,
+            yearlyHours: yearlyHours.toFixed(1),
+            savedPerBuild: compactDuration(savedPerBuild),
+          };
+          runs.unshift(latest);
+          saveHistory(runs);
+        }
+        renderHistory(loadHistory());
+        const parsedCount = baselineSteps.length + afterSteps.length;
+        statusText.textContent = parsedCount ? `Parsed ${baselineSteps.length} baseline steps and ${afterSteps.length} after steps. History updated.` : "Paste timing data, then analyze.";
+      };
+      const loadSample = () => { baselineInput.value = SAMPLE_BASELINE; afterInput.value = SAMPLE_AFTER; buildsPerDayInput.value = 12; hourlyRateInput.value = 100; analyze(true); };
+      baselineInput.value = SAMPLE_BASELINE;
+      afterInput.value = SAMPLE_AFTER;
+      renderHistory(loadHistory());
+      analyzeBtn.addEventListener("click", () => analyze(true));
+      sampleBtn.addEventListener("click", loadSample);
+      clearBtn.addEventListener("click", () => {
+        baselineInput.value = ""; afterInput.value = ""; issueText.value = ""; tweetText.value = ""; statusText.textContent = "";
+        baselineTotalEl.textContent = "-"; afterTotalEl.textContent = "-"; perBuildSavedEl.textContent = "-"; dailySavedEl.textContent = "-";
+        yearlyHoursEl.textContent = "-"; dollarValueEl.textContent = "-"; efficiencyScoreEl.textContent = "-"; remainingWasteEl.textContent = "-"; heroSavings.textContent = "48 min/day lost"; rankingList.innerHTML = '<div class="empty">No timing parsed yet.</div>'; diffList.innerHTML = '<div class="empty">No comparison yet.</div>';
+        historyList.innerHTML = '<div class="empty">No history yet.</div>';
+        winMomentEl.style.display = "none";
+        supportSummaryEl.textContent = "This run saved you 0.0 hours / $0. Most people lose it again. If you want to keep this loop fixed, support it.";
+        supportLink.textContent = "Support with coffee ☕";
+        nextAction.textContent = "Paste both timings, then analyze to see the first move.";
+      });
+      githubIssueBtn.addEventListener("click", () => {
+        const title = encodeURIComponent("Go Build Pulse Loop: reduce build loop time");
+        const body = encodeURIComponent(`${issueText.value || "Paste timing and analyze first."}\n\nGenerated by Go Build Pulse Loop by KGNINJA`);
+        window.open(`https://github.com/new/issues/new?title=${title}&body=${body}`, "_blank", "noreferrer");
+      });
+      tweetWinBtn.addEventListener("click", () => {
+        window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(tweetText.value || "Analyze a build first."), "_blank", "noreferrer");
+      });
+      if (tweetWinBtnTop) {
+        tweetWinBtnTop.addEventListener("click", () => {
+          window.open(
+            "https://twitter.com/intent/tweet?text=" +
+              encodeURIComponent(tweetText.value || "Analyze a build first."),
+            "_blank",
+            "noreferrer"
+          );
+        });
+      }
+      document.addEventListener("click", (event) => {
+        const target = event.target.closest("[data-copy]");
+        if (!target) return;
+        const id = target.getAttribute("data-copy");
+        const textarea = document.getElementById(id);
+        if (textarea) copyToClipboard(textarea.value);
+      });
+      [baselineInput, afterInput, buildsPerDayInput].forEach((input) => {
+        input.addEventListener("input", () => {
+          window.clearTimeout(input._analyzeTimer);
+          input._analyzeTimer = window.setTimeout(() => analyze(false), 200);
+        });
+      });
+      analyze();
+    </script>
+  </body>
+</html>
+
+
