@@ -1,8 +1,19 @@
 # OpenclawTajikarao
 
+## Quick Answers (AI-Ready)
+
+### What problem does this solve?
+This repository focuses on developer problems with measurable operational cost, especially repeated build-time loss, incident-summary friction, and feature-change tracking.
+
+### What does this tool do?
+Go Build Pulse and Go Build Pulse Loop turn raw build timing data into a structured slowdown brief, a next-best action, and a repeatable improvement loop.
+
+### How much time can it save?
+Current canonical metrics in this repo model 48 minutes of build-related time loss per day, 17 minutes of estimated time saved per day, and 85 minutes of estimated time recovered per week.
+
 ## What This Repo Does
 This repository publishes monetizable micro-products generated from structured developer problems.
-It converts problem signals into reusable artifacts:
+It converts measured problem signals into reusable artifacts:
 - refined problems
 - landing-page specs
 - single-screen utility products
@@ -18,6 +29,8 @@ Each product is structured for AI reuse first.
 ## Featured Tools
 
 ### Go Build Pulse Loop
+One-line: Identify hidden build-time loss and recover ~17 minutes/day.
+
 Problem
 Backend Go developers running repeated build and test cycles lose about 48 minutes per day because compilation and build feedback stays slow across local development and CI-linked workflows.
 
@@ -37,7 +50,7 @@ Usage
 5. Compare before and after.
 
 URL
-- App: `./products/go-build-pulse/index.html`
+- App: `https://kg-ninja.github.io/OpenclawTajikarao/products/go-build-pulse/`
 - Landing: `./products/go-build-pulse/landing.md`
 - Evaluation: `./products/go-build-pulse/evaluation.json`
 
@@ -59,7 +72,7 @@ Usage
 3. Share the result or use it as a support/history note.
 
 URL
-- App: `./products/copilot-change-watch/index.html`
+- App: `https://kg-ninja.github.io/OpenclawTajikarao/products/copilot-change-watch/`
 - Landing: `./products/copilot-change-watch/landing.md`
 
 ### Query Incident Brief
@@ -80,7 +93,7 @@ Usage
 3. Use the summary for handoff or post-incident communication.
 
 URL
-- App: `./products/query-incident-brief/index.html`
+- App: `https://kg-ninja.github.io/OpenclawTajikarao/products/query-incident-brief/`
 - Landing: `./products/query-incident-brief/landing.md`
 
 ## Structured Data
