@@ -1,0 +1,160 @@
+{
+  "repo": "OpenclawTajikarao",
+  "version": 1,
+  "generated_at": "2026-03-29T08:05:00Z",
+  "tools": [
+    {
+      "name": "Go Build Pulse Loop",
+      "slug": "go-build-pulse",
+      "persona": "backend Go developer using repeated build and test loops",
+      "problem": "Backend Go developers running repeated build and test cycles lose about 48 minutes per day because compilation and build feedback stays slow across local development and CI-linked workflows.",
+      "solution": "A single-screen HTML/JS utility that parses pasted build timing output, ranks slowest steps, recommends the next best optimization action, and supports before/after comparison.",
+      "result": {
+        "summary": "48 minutes estimated time loss per day detected and 17 minutes estimated time saved per day estimated.",
+        "estimated_time_loss_per_day_minutes": 48,
+        "estimated_time_saved_per_day_minutes": 17,
+        "estimated_time_saved_per_week_minutes": 85,
+        "evidence": "products/go-build-pulse/evaluation.json"
+      },
+      "usage": [
+        "Paste current build timing output.",
+        "Analyze the slowest build steps.",
+        "Apply the top recommendation and compare before and after."
+      ],
+      "url": {
+        "app": "./products/go-build-pulse/index.html",
+        "landing": "./products/go-build-pulse/landing.md",
+        "repo": "https://github.com/KG-NINJA/OpenclawTajikarao",
+        "evaluation": "./products/go-build-pulse/evaluation.json",
+        "meta": "./products/go-build-pulse/meta.json"
+      },
+      "cta_url": "https://buymeacoffee.com/kgninja",
+      "price": "$9-$19",
+      "updated_at": "2026-03-29T08:05:00Z",
+      "status": "active",
+      "source_files": [
+        "README.md",
+        "products/go-build-pulse/index.html",
+        "products/go-build-pulse/landing.md",
+        "products/go-build-pulse/meta.json",
+        "products/go-build-pulse/evaluation.json",
+        "products/go-build-pulse/lp-spec.json",
+        "products/go-build-pulse/product-spec.json",
+        "products/go-build-pulse/strict-problem.json"
+      ],
+      "inferred_fields": []
+    },
+    {
+      "name": "Copilot Change Watch",
+      "slug": "copilot-change-watch",
+      "persona": null,
+      "problem": "Developers lose time when GitHub and Copilot features appear, disappear, or change across plans and surfaces without a clear comparison record.",
+      "solution": "A single-screen HTML/JS utility that converts scattered feature observations into a concise change brief that can be shared immediately.",
+      "result": {
+        "summary": "1 consolidated change brief generated from pasted observations.",
+        "generated_change_briefs_per_run": 1,
+        "share_paths_per_artifact": 1,
+        "monetization_links_per_artifact": 1,
+        "evidence": "README.md"
+      },
+      "usage": [
+        "Paste feature observations by date and plan.",
+        "Generate a short change brief.",
+        "Share the result or use it as a support note."
+      ],
+      "url": {
+        "app": "./products/copilot-change-watch/index.html",
+        "landing": "./products/copilot-change-watch/landing.md",
+        "repo": "https://github.com/KG-NINJA/OpenclawTajikarao",
+        "evaluation": null,
+        "meta": "./products/copilot-change-watch/meta.json"
+      },
+      "cta_url": "https://buymeacoffee.com/kgninja",
+      "price": null,
+      "updated_at": "2026-03-20T01:20:00Z",
+      "status": "active",
+      "source_files": [
+        "README.md",
+        "products/copilot-change-watch/index.html",
+        "products/copilot-change-watch/landing.md",
+        "products/copilot-change-watch/meta.json",
+        "products/copilot-change-watch/README.md"
+      ],
+      "inferred_fields": ["persona", "price"]
+    },
+    {
+      "name": "Query Incident Brief",
+      "slug": "query-incident-brief",
+      "persona": "backend engineer or SRE handling database incidents",
+      "problem": "Backend engineers and SREs lose time during production database incidents because raw query notes and timeline fragments are hard to convert into an actionable summary.",
+      "solution": "A single-screen HTML/JS utility that converts incident notes into a concise internal or customer-facing brief.",
+      "result": {
+        "summary": "1 incident brief generated from pasted notes with a modeled 48 minutes of daily time loss for this problem class.",
+        "estimated_time_loss_per_day_minutes": 48,
+        "generated_incident_briefs_per_run": 1,
+        "monetization_links_per_artifact": 1,
+        "evidence": "README.md"
+      },
+      "usage": [
+        "Paste database incident notes.",
+        "Generate a compact summary.",
+        "Use the summary for handoff or communication."
+      ],
+      "url": {
+        "app": "./products/query-incident-brief/index.html",
+        "landing": "./products/query-incident-brief/landing.md",
+        "repo": "https://github.com/KG-NINJA/OpenclawTajikarao",
+        "evaluation": null,
+        "meta": "./products/query-incident-brief/meta.json"
+      },
+      "cta_url": "https://buymeacoffee.com/kgninja",
+      "price": null,
+      "updated_at": "2026-03-26T15:23:57Z",
+      "status": "active",
+      "source_files": [
+        "README.md",
+        "products/query-incident-brief/index.html",
+        "products/query-incident-brief/landing.md",
+        "products/query-incident-brief/meta.json",
+        "products/query-incident-brief/README.md"
+      ],
+      "inferred_fields": ["price"]
+    },
+    {
+      "name": "Ops Issue Brief",
+      "slug": "ops-issue-brief",
+      "persona": null,
+      "problem": "Operational issue notes are converted into a compact brief, but the current repo state does not define a clear target persona or monetized value proposition.",
+      "solution": "A single-screen HTML/JS utility that turns operational notes into a compact brief.",
+      "result": {
+        "summary": "No verified numerical user-facing result is documented beyond one generated brief artifact.",
+        "estimated_time_loss_per_day_minutes": null,
+        "estimated_time_saved_per_day_minutes": null,
+        "evidence": "products/ops-issue-brief/meta.json"
+      },
+      "usage": [
+        "Paste operational issue notes.",
+        "Generate a brief.",
+        "Review the summary manually."
+      ],
+      "url": {
+        "app": "./products/ops-issue-brief/index.html",
+        "landing": "./products/ops-issue-brief/landing.md",
+        "repo": "https://github.com/KG-NINJA/OpenclawTajikarao",
+        "evaluation": null,
+        "meta": "./products/ops-issue-brief/meta.json"
+      },
+      "cta_url": "https://buymeacoffee.com/kgninja",
+      "price": null,
+      "updated_at": "2026-03-28T06:39:33Z",
+      "status": "draft",
+      "source_files": [
+        "products/ops-issue-brief/index.html",
+        "products/ops-issue-brief/landing.md",
+        "products/ops-issue-brief/meta.json",
+        "products/ops-issue-brief/README.md"
+      ],
+      "inferred_fields": ["name", "persona", "price", "result.summary"]
+    }
+  ]
+}

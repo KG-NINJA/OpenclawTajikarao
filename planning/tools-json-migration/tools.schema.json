@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OpenclawTajikarao Tools Canonical Schema",
+  "type": "object",
+  "required": ["repo", "version", "generated_at", "tools"],
+  "properties": {
+    "repo": {"type": "string"},
+    "version": {"type": "integer", "minimum": 1},
+    "generated_at": {"type": "string"},
+    "tools": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "slug",
+          "problem",
+          "solution",
+          "result",
+          "usage",
+          "url",
+          "cta_url",
+          "status",
+          "source_files",
+          "inferred_fields"
+        ],
+        "properties": {
+          "name": {"type": "string"},
+          "slug": {"type": "string"},
+          "persona": {"type": ["string", "null"]},
+          "problem": {"type": "string"},
+          "solution": {"type": "string"},
+          "result": {
+            "type": "object",
+            "required": ["summary"],
+            "properties": {
+              "summary": {"type": ["string", "null"]},
+              "estimated_time_loss_per_day_minutes": {"type": ["number", "null"]},
+              "estimated_time_saved_per_day_minutes": {"type": ["number", "null"]},
+              "estimated_time_saved_per_week_minutes": {"type": ["number", "null"]},
+              "generated_change_briefs_per_run": {"type": ["number", "null"]},
+              "generated_incident_briefs_per_run": {"type": ["number", "null"]},
+              "share_paths_per_artifact": {"type": ["number", "null"]},
+              "monetization_links_per_artifact": {"type": ["number", "null"]},
+              "evidence": {"type": ["string", "null"]}
+            },
+            "additionalProperties": true
+          },
+          "usage": {
+            "type": "array",
+            "items": {"type": "string"},
+            "minItems": 1
+          },
+          "url": {
+            "type": "object",
+            "required": ["app", "landing", "repo"],
+            "properties": {
+              "app": {"type": ["string", "null"]},
+              "landing": {"type": ["string", "null"]},
+              "repo": {"type": ["string", "null"]},
+              "evaluation": {"type": ["string", "null"]},
+              "meta": {"type": ["string", "null"]}
+            },
+            "additionalProperties": true
+          },
+          "cta_url": {"type": ["string", "null"]},
+          "price": {"type": ["string", "null"]},
+          "updated_at": {"type": ["string", "null"]},
+          "status": {"type": "string", "enum": ["draft", "active", "archived"]},
+          "source_files": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "inferred_fields": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "notes": {"type": ["string", "null"]}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
