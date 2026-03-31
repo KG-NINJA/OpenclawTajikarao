@@ -1,3 +1,7 @@
-# Issue Scan (2026-03-12T13:45:04.632513Z)
+# Issue Scan (2026-03-31T13:45:04.063088Z)
 
-No open issues found.
+- #5: Test issue from OpenClaw
+- #4: How to optimize Go build speed?
+- #3: How to make Go build faster?
+- #2: How to reduce Go build time?
+- #1: How to speed up Go build?
