@@ -1,17 +1,21 @@
-# Go Build Pulse
+# Go Build Pulse Loop
 
-## Refined Problem
-- who: backend Go developer using repeated build and test loops
-- situation: local development plus CI pipelines for Go services
-- pain: Slow Go compilation in development pipelines
-- estimated_time_loss_per_day: 48 minutes
+## Value Proposition
+Go Build Pulse Loop is a paid decision engine for Go teams that turns raw timing logs into one high-impact fix, a money-based cost estimate, and a copy-paste-ready fix script.
 
-## LP
-- headline: Reduce 48 minutes of build-related time loss for backend Go developer using repeated build and test loops
-- value_proposition: Turn recurring build delay into measurable time savings and clearer optimization priorities.
-- pricing_hint: $9-$19
+## Problem
+Backend Go developers running repeated build and test cycles lose about 48 minutes per day because slow build feedback is hard to isolate and optimize in the right order.
 
-## Evaluation
-- estimated_time_saved_per_day: 17 minutes
-- estimated_value_per_week: 85 minutes of recovered development time
-- should_deploy: True
+## Why users pay
+This product does not stop at analysis. It tells the user what to fix next, estimates daily and monthly value, and generates a ready-to-use fix script.
+
+## Free vs Paid
+- Free: timing analysis, top bottleneck, before/after comparison
+- Paid ($9): next fix, fix script, time-saved estimate, monthly value estimate
+
+## Monetization
+- Price: $9
+- CTA: https://buymeacoffee.com/kgninja
+
+## Core promise
+Stop wasting 48 minutes a day on Go builds. Fix the slowest part in seconds.
