@@ -1,0 +1,2 @@
+Trigger GitHub Pages deployment from main after installing the main-branch workflow.
+Timestamp: 2026-04-09T10:08:00Z
