@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="SNSで使える4コマ漫画JSONメーカーの30秒スコアアタックゲーム">
+    <title>4コマJSONラッシュ</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="style.css">
+  
+    <meta property="og:image" content="assets/background.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+  </head>
+  <body>
+    <main class="shell">
+      <section id="gameRoot" class="game-root" aria-label="4コマJSONラッシュ">
+        <div class="game-bg" aria-hidden="true"></div>
+        <div class="hud">
+          <div class="meter"><span>スコア</span><strong id="scoreDisplay">0</strong></div>
+          <div class="meter hot"><span>残り</span><strong id="timeDisplay">30.0</strong></div>
+          <div class="meter"><span>ベスト</span><strong id="bestDisplay">0</strong></div>
+        </div>
+        <canvas id="gameCanvas" aria-label="ゲーム画面"></canvas>
+        <div class="side-panel">
+          <h1>4コマJSONラッシュ</h1>
+          <p>光る「起承転結JSON」を集めて、赤い崩壊プロンプトを避けろ。30秒でSNS漫画の種を量産。</p>
+          <button id="startButton" type="button">スタート</button>
+          <div class="instructions">
+            <span>PC: 矢印 / WASD</span>
+            <span>スマホ: 下のパッド / ドラッグ</span>
+          </div>
+          <div class="output-box">
+            <span>生成サンプル</span>
+            <code id="jsonPreview">{"panels":["共感","失敗","発見","保存"]}</code>
+            <code id="promptPreview">prompt: 短く刺さる4コマ構成</code>
+          </div>
+        </div>
+        <div class="touch-pad" aria-label="タッチ操作">
+          <button data-dir="up" aria-label="上">▲</button>
+          <button data-dir="left" aria-label="左">◀</button>
+          <button data-dir="down" aria-label="下">▼</button>
+          <button data-dir="right" aria-label="右">▶</button>
+        </div>
+        <div id="gameOverPanel" class="game-over" hidden>
+          <div class="result">
+            <span>ゲーム終了</span>
+            <strong id="finalScore">0</strong>
+            <p id="resultCopy">SNS漫画JSONの素材を獲得。</p>
+          </div>
+          <div class="actions">
+            <button id="retryButton" type="button">もう一回</button>
+            <a id="shareButton" href="#" target="_blank" rel="noopener">Xで共有</a>
+            <a id="supportLink" href="https://buymeacoffee.com/kgninja" target="_blank" rel="noopener">300円で応援する</a>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
