@@ -1,0 +1,344 @@
+:root {
+  color-scheme: dark;
+  --bg: #070611;
+  --ink: #f8fbff;
+  --muted: #a9b6d3;
+  --pink: #ff2bd6;
+  --cyan: #14f7ff;
+  --green: #6dff5f;
+  --yellow: #ffe84a;
+  --red: #ff3d42;
+  --panel: rgba(10, 12, 28, 0.78);
+  --line: rgba(255, 255, 255, 0.16);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(255, 43, 214, 0.35), transparent 30%),
+    radial-gradient(circle at 85% 18%, rgba(20, 247, 255, 0.28), transparent 28%),
+    linear-gradient(135deg, #070611 0%, #151031 44%, #071d24 100%);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button,
+a {
+  font: inherit;
+}
+
+.shell {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 14px;
+}
+
+.game-frame {
+  position: relative;
+  min-height: calc(100vh - 28px);
+  overflow: hidden;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    rgba(4, 5, 18, 0.66);
+  background-size: 42px 42px;
+  box-shadow: 0 0 34px rgba(20, 247, 255, 0.22), inset 0 0 55px rgba(255, 43, 214, 0.14);
+}
+
+.game-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(115deg, rgba(255, 232, 74, 0.16), transparent 22%),
+    repeating-linear-gradient(90deg, transparent 0 18px, rgba(20, 247, 255, 0.05) 18px 20px);
+  mix-blend-mode: screen;
+}
+
+.topbar,
+.play-ui,
+.maker-output {
+  position: relative;
+  z-index: 2;
+}
+
+.topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+}
+
+.label {
+  margin: 0 0 4px;
+  color: var(--yellow);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 0;
+  color: white;
+  font-size: clamp(28px, 5vw, 58px);
+  line-height: 0.92;
+  text-shadow: 0 0 12px var(--cyan), 3px 3px 0 var(--pink);
+}
+
+.meters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(78px, 1fr));
+  gap: 8px;
+  min-width: min(460px, 100%);
+}
+
+.meters span {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.48);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.meters strong {
+  display: block;
+  color: var(--ink);
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.stage-wrap {
+  position: relative;
+  z-index: 1;
+  width: calc(100% - 28px);
+  height: clamp(330px, 52vh, 560px);
+  margin: 0 14px;
+  overflow: hidden;
+  border: 1px solid rgba(20, 247, 255, 0.42);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 45% 30%, rgba(255, 255, 255, 0.15), transparent 16%),
+    linear-gradient(180deg, rgba(17, 6, 42, 0.35), rgba(3, 18, 26, 0.28));
+}
+
+#gameCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 240px;
+  min-height: 220px;
+}
+
+.start-panel,
+.game-over {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(520px, calc(100% - 28px));
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 8px;
+  padding: 18px;
+  background: rgba(5, 6, 18, 0.86);
+  box-shadow: 0 0 32px rgba(255, 43, 214, 0.32);
+  text-align: center;
+}
+
+.start-panel p,
+.game-over p {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+button,
+.result-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 6px;
+  padding: 9px 14px;
+  color: white;
+  background: linear-gradient(135deg, var(--pink), #6b4dff 55%, var(--cyan));
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 0 18px rgba(20, 247, 255, 0.26);
+}
+
+button:active,
+.result-actions a:active {
+  transform: translateY(1px);
+}
+
+.result-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+#supportLink {
+  background: linear-gradient(135deg, #ffe84a, #ff2bd6 50%, #14f7ff);
+  color: #080611;
+  font-weight: 900;
+}
+
+.play-ui {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+}
+
+.instructions {
+  color: #dbe8ff;
+  font-size: 14px;
+}
+
+.touch-pad {
+  display: grid;
+  grid-template-columns: repeat(3, 44px);
+  grid-template-rows: repeat(2, 40px);
+  gap: 6px;
+}
+
+.pad[data-dir="up"] {
+  grid-column: 2;
+}
+
+.pad[data-dir="left"] {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.pad[data-dir="down"] {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.pad[data-dir="right"] {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.pad {
+  min-height: 40px;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.maker-output {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 0 14px 14px;
+}
+
+.maker-output > div {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  background: var(--panel);
+}
+
+.maker-output h2 {
+  margin-bottom: 8px;
+  font-size: 15px;
+  color: var(--cyan);
+}
+
+pre {
+  min-height: 116px;
+  max-height: 190px;
+  margin: 0;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #f5fbff;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+@media (max-width: 760px) {
+  .shell {
+    padding: 8px;
+  }
+
+  .game-frame {
+    min-height: calc(100vh - 16px);
+  }
+
+  .topbar,
+  .play-ui,
+  .maker-output {
+    grid-template-columns: 1fr;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .topbar {
+    display: grid;
+  }
+
+  .meters {
+    grid-template-columns: repeat(3, 1fr);
+    min-width: 0;
+  }
+
+  .stage-wrap {
+    width: calc(100% - 20px);
+    height: 360px;
+    margin: 0 10px;
+  }
+
+  .touch-pad {
+    justify-self: center;
+  }
+
+  .maker-output {
+    display: grid;
+  }
+
+  .result-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+.game-root::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(rgba(4, 7, 20, 0.30), rgba(4, 7, 20, 0.62)), url("assets/background.jpg") center / cover no-repeat;
+  opacity: 0.50;
+  pointer-events: none;
+}
+
+#gameCanvas {
+  position: relative;
+  z-index: 1;
+}
+
+.start-panel,
+.game-over {
+  z-index: 2;
+}
