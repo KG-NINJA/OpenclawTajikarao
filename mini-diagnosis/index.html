@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AIツール導入ミニ診断 | 500円</title>
-  <meta name="description" content="AI/自動化/Stripe/Telegram/OpenClaw/Codexの詰まりを500円で1つ診断。24時間以内に改善案3つと最短実装手順を返します。" />
+  <title>AI Agent Fix API | 500円</title>
+  <meta name="description" content="AI agent / Codex / OpenClaw / Stripe / Telegramの詰まりを500円で1件診断。PayPal支払い後、Telegramで相談内容を送るだけ。" />
   <style>
     :root { color-scheme: light; --ink:#191919; --muted:#5f6368; --line:#d7d7d7; --accent:#0f766e; --bg:#fbfbf8; --panel:#fff; }
     * { box-sizing: border-box; }
@@ -14,7 +14,9 @@
     h1 { font-size: clamp(30px, 7vw, 52px); line-height:1.08; margin: 10px 0 18px; letter-spacing: 0; }
     .lead { font-size: 18px; color: #303030; margin: 0 0 26px; }
     .price { font-size: 22px; font-weight: 800; margin: 22px 0; }
-    .cta { display:inline-flex; align-items:center; justify-content:center; min-height:52px; padding: 0 22px; border-radius: 8px; background: var(--accent); color:#fff; text-decoration:none; font-weight:800; border:0; }
+    .actions { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin: 18px 0 8px; }
+    .cta { display:inline-flex; align-items:center; justify-content:center; min-height:52px; padding: 0 22px; border-radius: 8px; background: var(--accent); color:#fff; text-decoration:none; font-weight:800; border:0; cursor:pointer; font-size:16px; }
+    .cta.secondary { background:#263238; }
     .cta.disabled { background:#777; pointer-events:none; }
     section { border-top:1px solid var(--line); padding-top: 24px; margin-top: 30px; }
     h2 { font-size: 20px; margin: 0 0 12px; }
@@ -23,34 +25,71 @@
     .note { color: var(--muted); font-size: 14px; margin-top: 14px; }
     .box { background: var(--panel); border:1px solid var(--line); border-radius: 8px; padding: 18px; margin-top: 18px; }
     code { background:#eee; padding:2px 5px; border-radius:4px; }
+    textarea { width:100%; min-height:190px; border:1px solid var(--line); border-radius:8px; padding:12px; font:14px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color:var(--ink); background:#fff; }
+    .steps { counter-reset: step; list-style:none; padding:0; }
+    .steps li { counter-increment: step; display:flex; gap:10px; align-items:flex-start; }
+    .steps li::before { content: counter(step); width:26px; height:26px; border-radius:50%; background:var(--accent); color:#fff; display:inline-flex; align-items:center; justify-content:center; flex:0 0 26px; font-weight:800; }
   </style>
 </head>
 <body>
   <main>
-    <div class="eyebrow">24時間以内に返答 / 500円</div>
-    <h1>AIツールの詰まりを500円で1つ解消します</h1>
-    <p class="lead">AI、自動化、Stripe、Telegram、OpenClaw、Codexまわりで止まっている問題を1つだけ診断し、改善案3つと最短実装手順を返します。</p>
-    <div class="price">AIツール導入ミニ診断: 500円</div>
-    <a id="buy" class="cta" href="https://paypal.me/KGNINJA/500JPY">PayPalで500円を支払う</a>
-    <p class="note">購入後、Telegramまたはメールで相談内容を送ってください。秘密情報やAPIキーは送らないでください。</p>
+    <div class="eyebrow">AI agent向け / 24時間以内 / 500円</div>
+    <h1>AI agentの詰まりを500円で1件診断します</h1>
+    <p class="lead">Codex、OpenClaw、Stripe、Telegram、VPS、Node/APIのエラーを1件だけ診断し、原因候補と次に打つコマンドをJSON風に返します。</p>
+    <div class="price">AI Automation Fix: 500円 / 1 task</div>
+    <div class="actions">
+      <a id="buy" class="cta" href="https://paypal.me/KGNINJA/500JPY">PayPalで500円を支払う</a>
+      <button class="cta secondary" type="button" id="copyRequest">相談文をコピー</button>
+    </div>
+    <p class="note">支払い後、下の相談文をTelegramへ送ってください。APIキー、OAuthトークン、パスワードは送らないでください。</p>
 
     <section>
-      <h2>対象</h2>
-      <ul>
-        <li>AIツールを入れたいが、どこから直すべきか分からない</li>
-        <li>Stripe、Telegram bot、Codex、OpenClawの設定で詰まっている</li>
-        <li>大きな開発ではなく、まず1つの詰まりを解消したい</li>
+      <h2>購入後の流れ</h2>
+      <ul class="steps">
+        <li>PayPalで500円を支払う</li>
+        <li>下の相談文をコピーする</li>
+        <li>Telegramで「支払った + 相談内容」を送る</li>
+        <li>24時間以内に原因候補、次のコマンド、注意点を返答</li>
       </ul>
     </section>
 
     <section>
-      <h2>納品物</h2>
+      <h2>対象</h2>
       <ul>
-        <li>問題の原因候補</li>
-        <li>改善案3つ</li>
-        <li>最短実装手順</li>
-        <li>次に確認すべきコマンドや画面</li>
+        <li>AI agent / Codex / OpenClawが返答しない、動かない</li>
+        <li>Stripe / PayPal / Telegram / VPS / Node APIで詰まっている</li>
+        <li>AI agentが処理できる形で、次の実行手順がほしい</li>
       </ul>
+    </section>
+
+    <section>
+      <h2>返すもの</h2>
+      <ul>
+        <li>原因候補</li>
+        <li>次に打つコマンド</li>
+        <li>壊さないための注意点</li>
+        <li>必要なら追加で確認すべきログ</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Telegramに送る相談文</h2>
+      <div class="box">
+        <textarea id="requestText">PayPalで500円支払いました。
+
+相談内容:
+
+やりたい結果:
+
+使っている環境:
+
+エラー文:
+
+試したこと:
+
+秘密情報/APIキーは伏せています。</textarea>
+        <p class="note" id="copyStatus">ボタンでコピーしてTelegramへ送ってください。</p>
+      </div>
     </section>
 
     <section>
@@ -59,19 +98,24 @@
         <li>1回の購入で扱う問題は1つです</li>
         <li>作業代行ではなく、診断と手順提示です</li>
         <li>返答目安は24時間以内です</li>
-        <li>APIキー、OAuthトークン、パスワードは送らないでください</li>
+        <li>秘密情報は送らないでください</li>
       </ul>
     </section>
-
-    <section>
-      <h2>相談テンプレート</h2>
-      <div class="box">
-        <p><code>困っていること:</code></p>
-        <p><code>使っている環境:</code></p>
-        <p><code>エラー文:</code></p>
-        <p><code>やりたい結果:</code></p>
-      </div>
-    </section>
   </main>
+  <script>
+    const button = document.getElementById("copyRequest");
+    const textarea = document.getElementById("requestText");
+    const status = document.getElementById("copyStatus");
+    button.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(textarea.value);
+        status.textContent = "コピーしました。Telegramへ貼り付けて送ってください。";
+      } catch {
+        textarea.focus();
+        textarea.select();
+        status.textContent = "選択しました。コピーしてTelegramへ貼り付けてください。";
+      }
+    });
+  </script>
 </body>
 </html>
