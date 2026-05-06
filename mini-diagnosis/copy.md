@@ -6,6 +6,6 @@ AI、自動化、Stripe、Telegram、OpenClaw、Codexまわりで止まってい
 24時間以内に「原因候補」「改善案3つ」「最短実装手順」を返します。
 
 購入はこちら:
-PAYMENT_LINK_HERE
+https://paypal.me/KGNINJA/500JPY
 
 #KGNINJA
