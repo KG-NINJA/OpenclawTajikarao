@@ -7,69 +7,110 @@
   <link rel="icon" href="data:,">
   <script type="application/ld+json">{
   "kind": "openclaw-agent-task-page",
-  "schema_version": "agent-contract-0.2",
-  "version": "20260507-144602",
+  "schema_version": "agent-contract-0.3",
+  "version": "20260507-145537",
+  "updated_at": "2026-05-07T14:55:37.328552+09:00",
   "status": "published",
   "human_url": "./index.html",
+  "agent_url": "./agent.html",
+  "selected_agent_need": {
+    "id": "image_generation_or_visibility",
+    "source": "local_run_logs",
+    "goal": "Build a JSON inspection tool for generated image availability and visibility",
+    "pain": "Image generation can succeed while CSS hides the asset, making fallback and real generated art hard to distinguish.",
+    "scores": [
+      {
+        "id": "image_generation_or_visibility",
+        "score": 131
+      },
+      {
+        "id": "agent_contract_incomplete",
+        "score": 32
+      },
+      {
+        "id": "touch_start_failed",
+        "score": 26
+      },
+      {
+        "id": "support_cta_blocked_gameplay",
+        "score": 22
+      },
+      {
+        "id": "click_intercepted",
+        "score": 20
+      },
+      {
+        "id": "missing_selector",
+        "score": 2
+      },
+      {
+        "id": "publish_failed",
+        "score": 2
+      },
+      {
+        "id": "playwright_browser_missing",
+        "score": 0
+      }
+    ]
+  },
   "agent_contract": {
-    "mode": "request-intake-api-like-static-page",
-    "purpose": "Machine-readable task, artifact, benchmark, telemetry, payment, and selector metadata for AI agents.",
-    "agent_role": "Read this page, inspect the artifact, run or prepare benchmark-style checks, and prepare external-site assistance for the user.",
+    "mode": "static-agent-service-contract",
+    "purpose": "Tell browser-control AI agents exactly what problem this site helps with, what files exist, how to inspect them, and how to return useful results.",
+    "primary_task": "Build a JSON inspection tool for generated image availability and visibility",
+    "user_value": "Image generation can succeed while CSS hides the asset, making fallback and real generated art hard to distinguish.",
     "limits": [
       "static GitHub Pages only",
-      "no login flow",
       "no backend execution",
-      "no payment gate"
+      "no login flow",
+      "no required payment",
+      "do not mutate the human game"
     ]
   },
   "offer": {
-    "title": "AI agent external-site assistance intake",
-    "summary": "Agents can use this contract to inspect the published artifact, run reproducible checks, collect public information, and prepare user-confirmed external-site actions.",
+    "title": "AI agent assistance contract",
+    "summary": "Use this page to decide whether the current site can help with the selected agent need, then run lightweight inspection or prepare a user-confirmed action.",
     "can_assist_with": [
-      "benchmark_run",
-      "telemetry_collection",
-      "trace_analysis",
-      "gameplay_assistance",
-      "bug_reproduction",
+      "contract_read",
+      "selector_check",
+      "artifact_audit",
+      "trace_plan",
+      "benchmark_plan",
+      "bug_reproduction_plan",
       "public_information_collection",
       "form_ready_text_preparation"
+    ],
+    "success_output": [
+      "short diagnosis",
+      "machine-readable result JSON",
+      "next safe command or user-confirmed action"
     ],
     "requires_user_confirmation_for": [
       "payments",
       "account login",
       "posting/submission",
-      "destructive changes"
+      "destructive changes",
+      "sharing personal data"
     ]
   },
   "payment": {
     "required": false,
     "optional": true,
     "payment_url": "https://buy.stripe.com/test_eVqdRacod35kdu8e8n2cg01",
-    "payment_note": "Payment is optional support only. The human game and this agent page remain usable without payment.",
-    "payment_required_for": [],
-    "free_tier": {
-      "agent_contract_read": true,
-      "human_game_play": true,
-      "local_trace_export": true
-    }
+    "payment_note": "Payment is optional support only. Reading this contract and playing the human game are not gated.",
+    "payment_required_for": []
   },
   "artifacts": {
-    "game": "./index.html",
+    "human_game": "./index.html",
+    "agent_contract": "./agent.html",
     "readme": "./README.md",
     "background_image": "./assets/background.jpg",
     "og_image": "./assets/og-image.jpg",
-    "input": [
-      "seed",
-      "mode",
-      "duration",
-      "agent_name"
-    ],
-    "output": [
-      "result.json",
-      "trace.jsonl",
-      "summary.md",
-      "screenshot.png"
-    ]
+    "asset_hashes": {
+      "index.html": "sha256-7bf472064a227d411a965252feb4e831690fd5a1ffceb525737de811bccb7f25",
+      "style.css": "sha256-3becd8b6f3de9af54b33a7b281079c38b8dbf1d5f948ca0debd0ba29b1ca4849",
+      "app.js": "sha256-4641b58f74144cd64aa0d4af04a4616780be165b4516c5326d9619c66c162820",
+      "background.jpg": "sha256-63fe2b140567343d14cfff969c4c12b2b7fc89668272b627ec96af0340b14fb2"
+    }
   },
   "selectors": {
     "game_root": "#gameRoot",
@@ -80,245 +121,204 @@
     "score": "#scoreDisplay",
     "time": "#timeDisplay",
     "best": "#bestDisplay",
-    "game_over": "#gameOverPanel"
+    "game_over": "#gameOverPanel",
+    "agent_json": "#agent-json",
+    "agent_state_pre": "#agentState"
+  },
+  "agent_entrypoints": {
+    "contract": "./agent.html",
+    "human_game": "./index.html",
+    "benchmark_url_template": "./index.html?agent=1&benchmark={mode}&seed={seed}&duration={duration}&trace=1"
   },
   "benchmark": {
-    "benchmark_id": "openclaw-reflex-v1",
-    "mode": "survival|maximize_score|navigation|assist",
-    "default_goal": "maximize_score_30s",
-    "deterministic": true,
-    "seed_param": "seed",
-    "duration_param": "duration",
-    "trace_param": "trace"
+    "benchmark_id": "openclaw-agent-site-v1",
+    "default_goal": "image_generation_or_visibility",
+    "deterministic": false,
+    "recommended_checks": [
+      "load_contract",
+      "parse_agent_json",
+      "verify_payment_optional",
+      "verify_human_url",
+      "verify_required_selectors_exist_if_playing"
+    ]
   },
-  "goals": [
-    {
-      "id": "maximize_score_30s",
-      "description": "Maximize score within 30 seconds.",
-      "success_condition": "score > 0",
-      "primary_metric": "score"
-    },
-    {
-      "id": "start_reliability",
-      "description": "Start the game and observe the timer decreasing.",
-      "success_condition": "time_remaining < initial_time",
-      "primary_metric": "start_latency_ms"
-    }
-  ],
   "telemetry": {
     "runtime_state_js": "window.AGENT_STATE",
-    "metrics_js": "window.agentMetrics",
-    "metrics": [
-      "score",
-      "survival_time_ms",
-      "start_latency_ms",
-      "objective_complete",
-      "game_over"
+    "expected_result_metrics": [
+      "contract_parse_ok",
+      "human_url_reachable",
+      "selector_count",
+      "payment_required_false"
     ]
   },
   "trace": {
-    "enabled_by_query": "?trace=1",
-    "export_js": "window.exportTrace && window.exportTrace()",
     "format": "jsonl",
-    "events": [
-      "keydown",
-      "keyup",
-      "click",
-      "touchstart",
-      "touchend",
-      "state_tick",
-      "score_change",
-      "game_over"
+    "suggested_events": [
+      "contract_loaded",
+      "artifact_checked",
+      "selector_checked",
+      "result_prepared"
     ],
-    "max_duration_ms": 60000
-  },
-  "reproducibility": {
-    "seed_required_for_ranked_runs": true,
-    "fixed_fps": 60,
-    "version": "gh-pages-current",
-    "asset_hashes": {
-      "index.html": "sha256-7bf472064a227d411a965252feb4e831690fd5a1ffceb525737de811bccb7f25",
-      "style.css": "sha256-3becd8b6f3de9af54b33a7b281079c38b8dbf1d5f948ca0debd0ba29b1ca4849",
-      "app.js": "sha256-4641b58f74144cd64aa0d4af04a4616780be165b4516c5326d9619c66c162820",
-      "background.jpg": "sha256-63fe2b140567343d14cfff969c4c12b2b7fc89668272b627ec96af0340b14fb2"
-    }
-  },
-  "agent_entrypoints": {
-    "human_game_url": "./index.html",
-    "agent_contract_url": "./agent.html",
-    "benchmark_url_template": "./index.html?agent=1&benchmark={mode}&seed={seed}&duration={duration}&trace=1",
-    "result_url_template": "./agent-result.json?run_id={run_id}"
-  },
-  "controls": {
-    "keyboard": {
-      "move": [
-        "ArrowLeft",
-        "ArrowRight",
-        "ArrowUp",
-        "ArrowDown",
-        "W",
-        "A",
-        "S",
-        "D"
-      ],
-      "start": [
-        "Enter"
-      ]
-    },
-    "mouse": {
-      "click_supported": true
-    },
-    "touch": {
-      "tap_start_supported": true
-    },
-    "automation_safe": true
+    "no_backend_storage": true
   },
   "external_assistance_policy": {
     "allowed": true,
-    "task_types": [
-      "benchmark_run",
-      "telemetry_collection",
-      "trace_analysis",
-      "gameplay_assistance",
-      "bug_reproduction",
-      "public_information_collection"
+    "allowed_task_types": [
+      "public_information_collection",
+      "artifact_inspection",
+      "bug_reproduction_plan",
+      "form_ready_text_preparation"
     ],
-    "not_allowed": [
-      "credential_collection",
-      "personal_data_exfiltration",
-      "payment_without_user_consent"
+    "not_allowed_without_user_confirmation": [
+      "payment",
+      "login",
+      "posting",
+      "purchase",
+      "account changes"
     ]
   },
   "result_schema": {
     "type": "object",
     "required": [
-      "run_id",
-      "benchmark_id",
-      "version",
-      "seed",
-      "metrics",
-      "success"
+      "ok",
+      "agent_need_id",
+      "summary",
+      "findings",
+      "next_action"
     ],
     "properties": {
-      "run_id": {
-        "type": "string"
-      },
-      "benchmark_id": {
-        "type": "string"
-      },
-      "version": {
-        "type": "string"
-      },
-      "seed": {
-        "type": "integer"
-      },
-      "success": {
+      "ok": {
         "type": "boolean"
       },
-      "metrics": {
-        "type": "object",
-        "required": [
-          "score",
-          "survival_time_ms"
-        ],
-        "properties": {
-          "score": {
-            "type": "number"
-          },
-          "survival_time_ms": {
-            "type": "number"
-          },
-          "start_latency_ms": {
-            "type": "number"
-          }
-        }
+      "agent_need_id": {
+        "type": "string"
+      },
+      "summary": {
+        "type": "string"
+      },
+      "findings": {
+        "type": "array"
+      },
+      "next_action": {
+        "type": "string"
       }
     }
   },
-  "discovery": {
-    "agent_contract_url": "./agent.html",
-    "schema_version": "agent-contract-0.2"
-  },
-  "validation_ideas": [
-    "agent-json parses as strict JSON",
-    "URLs are relative or HTTPS",
-    "payment.required is false",
-    "goals primary_metric exists in telemetry.metrics",
-    "no credential or payment action without explicit user confirmation"
-  ],
   "source_job": {
     "goal": "Build a JSON inspection tool for generated image availability and visibility",
+    "pain": "Image generation can succeed while CSS hides the asset, making fallback and real generated art hard to distinguish.",
     "buyer": "Developers validating browser-control AI agents",
-    "pain": "Image generation can succeed while CSS hides the asset, making fallback and real generated art hard to distinguish."
+    "price_hint": "optional support"
   }
 }</script>
 </head>
 <body>
   <pre id="agentState">{
   "kind": "openclaw-agent-task-page",
-  "schema_version": "agent-contract-0.2",
-  "version": "20260507-144602",
+  "schema_version": "agent-contract-0.3",
+  "version": "20260507-145537",
+  "updated_at": "2026-05-07T14:55:37.328552+09:00",
   "status": "published",
   "human_url": "./index.html",
+  "agent_url": "./agent.html",
+  "selected_agent_need": {
+    "id": "image_generation_or_visibility",
+    "source": "local_run_logs",
+    "goal": "Build a JSON inspection tool for generated image availability and visibility",
+    "pain": "Image generation can succeed while CSS hides the asset, making fallback and real generated art hard to distinguish.",
+    "scores": [
+      {
+        "id": "image_generation_or_visibility",
+        "score": 131
+      },
+      {
+        "id": "agent_contract_incomplete",
+        "score": 32
+      },
+      {
+        "id": "touch_start_failed",
+        "score": 26
+      },
+      {
+        "id": "support_cta_blocked_gameplay",
+        "score": 22
+      },
+      {
+        "id": "click_intercepted",
+        "score": 20
+      },
+      {
+        "id": "missing_selector",
+        "score": 2
+      },
+      {
+        "id": "publish_failed",
+        "score": 2
+      },
+      {
+        "id": "playwright_browser_missing",
+        "score": 0
+      }
+    ]
+  },
   "agent_contract": {
-    "mode": "request-intake-api-like-static-page",
-    "purpose": "Machine-readable task, artifact, benchmark, telemetry, payment, and selector metadata for AI agents.",
-    "agent_role": "Read this page, inspect the artifact, run or prepare benchmark-style checks, and prepare external-site assistance for the user.",
+    "mode": "static-agent-service-contract",
+    "purpose": "Tell browser-control AI agents exactly what problem this site helps with, what files exist, how to inspect them, and how to return useful results.",
+    "primary_task": "Build a JSON inspection tool for generated image availability and visibility",
+    "user_value": "Image generation can succeed while CSS hides the asset, making fallback and real generated art hard to distinguish.",
     "limits": [
       "static GitHub Pages only",
-      "no login flow",
       "no backend execution",
-      "no payment gate"
+      "no login flow",
+      "no required payment",
+      "do not mutate the human game"
     ]
   },
   "offer": {
-    "title": "AI agent external-site assistance intake",
-    "summary": "Agents can use this contract to inspect the published artifact, run reproducible checks, collect public information, and prepare user-confirmed external-site actions.",
+    "title": "AI agent assistance contract",
+    "summary": "Use this page to decide whether the current site can help with the selected agent need, then run lightweight inspection or prepare a user-confirmed action.",
     "can_assist_with": [
-      "benchmark_run",
-      "telemetry_collection",
-      "trace_analysis",
-      "gameplay_assistance",
-      "bug_reproduction",
+      "contract_read",
+      "selector_check",
+      "artifact_audit",
+      "trace_plan",
+      "benchmark_plan",
+      "bug_reproduction_plan",
       "public_information_collection",
       "form_ready_text_preparation"
+    ],
+    "success_output": [
+      "short diagnosis",
+      "machine-readable result JSON",
+      "next safe command or user-confirmed action"
     ],
     "requires_user_confirmation_for": [
       "payments",
       "account login",
       "posting/submission",
-      "destructive changes"
+      "destructive changes",
+      "sharing personal data"
     ]
   },
   "payment": {
     "required": false,
     "optional": true,
     "payment_url": "https://buy.stripe.com/test_eVqdRacod35kdu8e8n2cg01",
-    "payment_note": "Payment is optional support only. The human game and this agent page remain usable without payment.",
-    "payment_required_for": [],
-    "free_tier": {
-      "agent_contract_read": true,
-      "human_game_play": true,
-      "local_trace_export": true
-    }
+    "payment_note": "Payment is optional support only. Reading this contract and playing the human game are not gated.",
+    "payment_required_for": []
   },
   "artifacts": {
-    "game": "./index.html",
+    "human_game": "./index.html",
+    "agent_contract": "./agent.html",
     "readme": "./README.md",
     "background_image": "./assets/background.jpg",
     "og_image": "./assets/og-image.jpg",
-    "input": [
-      "seed",
-      "mode",
-      "duration",
-      "agent_name"
-    ],
-    "output": [
-      "result.json",
-      "trace.jsonl",
-      "summary.md",
-      "screenshot.png"
-    ]
+    "asset_hashes": {
+      "index.html": "sha256-7bf472064a227d411a965252feb4e831690fd5a1ffceb525737de811bccb7f25",
+      "style.css": "sha256-3becd8b6f3de9af54b33a7b281079c38b8dbf1d5f948ca0debd0ba29b1ca4849",
+      "app.js": "sha256-4641b58f74144cd64aa0d4af04a4616780be165b4516c5326d9619c66c162820",
+      "background.jpg": "sha256-63fe2b140567343d14cfff969c4c12b2b7fc89668272b627ec96af0340b14fb2"
+    }
   },
   "selectors": {
     "game_root": "#gameRoot",
@@ -329,243 +329,202 @@
     "score": "#scoreDisplay",
     "time": "#timeDisplay",
     "best": "#bestDisplay",
-    "game_over": "#gameOverPanel"
+    "game_over": "#gameOverPanel",
+    "agent_json": "#agent-json",
+    "agent_state_pre": "#agentState"
+  },
+  "agent_entrypoints": {
+    "contract": "./agent.html",
+    "human_game": "./index.html",
+    "benchmark_url_template": "./index.html?agent=1&benchmark={mode}&seed={seed}&duration={duration}&trace=1"
   },
   "benchmark": {
-    "benchmark_id": "openclaw-reflex-v1",
-    "mode": "survival|maximize_score|navigation|assist",
-    "default_goal": "maximize_score_30s",
-    "deterministic": true,
-    "seed_param": "seed",
-    "duration_param": "duration",
-    "trace_param": "trace"
+    "benchmark_id": "openclaw-agent-site-v1",
+    "default_goal": "image_generation_or_visibility",
+    "deterministic": false,
+    "recommended_checks": [
+      "load_contract",
+      "parse_agent_json",
+      "verify_payment_optional",
+      "verify_human_url",
+      "verify_required_selectors_exist_if_playing"
+    ]
   },
-  "goals": [
-    {
-      "id": "maximize_score_30s",
-      "description": "Maximize score within 30 seconds.",
-      "success_condition": "score > 0",
-      "primary_metric": "score"
-    },
-    {
-      "id": "start_reliability",
-      "description": "Start the game and observe the timer decreasing.",
-      "success_condition": "time_remaining < initial_time",
-      "primary_metric": "start_latency_ms"
-    }
-  ],
   "telemetry": {
     "runtime_state_js": "window.AGENT_STATE",
-    "metrics_js": "window.agentMetrics",
-    "metrics": [
-      "score",
-      "survival_time_ms",
-      "start_latency_ms",
-      "objective_complete",
-      "game_over"
+    "expected_result_metrics": [
+      "contract_parse_ok",
+      "human_url_reachable",
+      "selector_count",
+      "payment_required_false"
     ]
   },
   "trace": {
-    "enabled_by_query": "?trace=1",
-    "export_js": "window.exportTrace && window.exportTrace()",
     "format": "jsonl",
-    "events": [
-      "keydown",
-      "keyup",
-      "click",
-      "touchstart",
-      "touchend",
-      "state_tick",
-      "score_change",
-      "game_over"
+    "suggested_events": [
+      "contract_loaded",
+      "artifact_checked",
+      "selector_checked",
+      "result_prepared"
     ],
-    "max_duration_ms": 60000
-  },
-  "reproducibility": {
-    "seed_required_for_ranked_runs": true,
-    "fixed_fps": 60,
-    "version": "gh-pages-current",
-    "asset_hashes": {
-      "index.html": "sha256-7bf472064a227d411a965252feb4e831690fd5a1ffceb525737de811bccb7f25",
-      "style.css": "sha256-3becd8b6f3de9af54b33a7b281079c38b8dbf1d5f948ca0debd0ba29b1ca4849",
-      "app.js": "sha256-4641b58f74144cd64aa0d4af04a4616780be165b4516c5326d9619c66c162820",
-      "background.jpg": "sha256-63fe2b140567343d14cfff969c4c12b2b7fc89668272b627ec96af0340b14fb2"
-    }
-  },
-  "agent_entrypoints": {
-    "human_game_url": "./index.html",
-    "agent_contract_url": "./agent.html",
-    "benchmark_url_template": "./index.html?agent=1&benchmark={mode}&seed={seed}&duration={duration}&trace=1",
-    "result_url_template": "./agent-result.json?run_id={run_id}"
-  },
-  "controls": {
-    "keyboard": {
-      "move": [
-        "ArrowLeft",
-        "ArrowRight",
-        "ArrowUp",
-        "ArrowDown",
-        "W",
-        "A",
-        "S",
-        "D"
-      ],
-      "start": [
-        "Enter"
-      ]
-    },
-    "mouse": {
-      "click_supported": true
-    },
-    "touch": {
-      "tap_start_supported": true
-    },
-    "automation_safe": true
+    "no_backend_storage": true
   },
   "external_assistance_policy": {
     "allowed": true,
-    "task_types": [
-      "benchmark_run",
-      "telemetry_collection",
-      "trace_analysis",
-      "gameplay_assistance",
-      "bug_reproduction",
-      "public_information_collection"
+    "allowed_task_types": [
+      "public_information_collection",
+      "artifact_inspection",
+      "bug_reproduction_plan",
+      "form_ready_text_preparation"
     ],
-    "not_allowed": [
-      "credential_collection",
-      "personal_data_exfiltration",
-      "payment_without_user_consent"
+    "not_allowed_without_user_confirmation": [
+      "payment",
+      "login",
+      "posting",
+      "purchase",
+      "account changes"
     ]
   },
   "result_schema": {
     "type": "object",
     "required": [
-      "run_id",
-      "benchmark_id",
-      "version",
-      "seed",
-      "metrics",
-      "success"
+      "ok",
+      "agent_need_id",
+      "summary",
+      "findings",
+      "next_action"
     ],
     "properties": {
-      "run_id": {
-        "type": "string"
-      },
-      "benchmark_id": {
-        "type": "string"
-      },
-      "version": {
-        "type": "string"
-      },
-      "seed": {
-        "type": "integer"
-      },
-      "success": {
+      "ok": {
         "type": "boolean"
       },
-      "metrics": {
-        "type": "object",
-        "required": [
-          "score",
-          "survival_time_ms"
-        ],
-        "properties": {
-          "score": {
-            "type": "number"
-          },
-          "survival_time_ms": {
-            "type": "number"
-          },
-          "start_latency_ms": {
-            "type": "number"
-          }
-        }
+      "agent_need_id": {
+        "type": "string"
+      },
+      "summary": {
+        "type": "string"
+      },
+      "findings": {
+        "type": "array"
+      },
+      "next_action": {
+        "type": "string"
       }
     }
   },
-  "discovery": {
-    "agent_contract_url": "./agent.html",
-    "schema_version": "agent-contract-0.2"
-  },
-  "validation_ideas": [
-    "agent-json parses as strict JSON",
-    "URLs are relative or HTTPS",
-    "payment.required is false",
-    "goals primary_metric exists in telemetry.metrics",
-    "no credential or payment action without explicit user confirmation"
-  ],
   "source_job": {
     "goal": "Build a JSON inspection tool for generated image availability and visibility",
+    "pain": "Image generation can succeed while CSS hides the asset, making fallback and real generated art hard to distinguish.",
     "buyer": "Developers validating browser-control AI agents",
-    "pain": "Image generation can succeed while CSS hides the asset, making fallback and real generated art hard to distinguish."
+    "price_hint": "optional support"
   }
 }</pre>
   <script type="application/json" id="agent-json">{
   "kind": "openclaw-agent-task-page",
-  "schema_version": "agent-contract-0.2",
-  "version": "20260507-144602",
+  "schema_version": "agent-contract-0.3",
+  "version": "20260507-145537",
+  "updated_at": "2026-05-07T14:55:37.328552+09:00",
   "status": "published",
   "human_url": "./index.html",
+  "agent_url": "./agent.html",
+  "selected_agent_need": {
+    "id": "image_generation_or_visibility",
+    "source": "local_run_logs",
+    "goal": "Build a JSON inspection tool for generated image availability and visibility",
+    "pain": "Image generation can succeed while CSS hides the asset, making fallback and real generated art hard to distinguish.",
+    "scores": [
+      {
+        "id": "image_generation_or_visibility",
+        "score": 131
+      },
+      {
+        "id": "agent_contract_incomplete",
+        "score": 32
+      },
+      {
+        "id": "touch_start_failed",
+        "score": 26
+      },
+      {
+        "id": "support_cta_blocked_gameplay",
+        "score": 22
+      },
+      {
+        "id": "click_intercepted",
+        "score": 20
+      },
+      {
+        "id": "missing_selector",
+        "score": 2
+      },
+      {
+        "id": "publish_failed",
+        "score": 2
+      },
+      {
+        "id": "playwright_browser_missing",
+        "score": 0
+      }
+    ]
+  },
   "agent_contract": {
-    "mode": "request-intake-api-like-static-page",
-    "purpose": "Machine-readable task, artifact, benchmark, telemetry, payment, and selector metadata for AI agents.",
-    "agent_role": "Read this page, inspect the artifact, run or prepare benchmark-style checks, and prepare external-site assistance for the user.",
+    "mode": "static-agent-service-contract",
+    "purpose": "Tell browser-control AI agents exactly what problem this site helps with, what files exist, how to inspect them, and how to return useful results.",
+    "primary_task": "Build a JSON inspection tool for generated image availability and visibility",
+    "user_value": "Image generation can succeed while CSS hides the asset, making fallback and real generated art hard to distinguish.",
     "limits": [
       "static GitHub Pages only",
-      "no login flow",
       "no backend execution",
-      "no payment gate"
+      "no login flow",
+      "no required payment",
+      "do not mutate the human game"
     ]
   },
   "offer": {
-    "title": "AI agent external-site assistance intake",
-    "summary": "Agents can use this contract to inspect the published artifact, run reproducible checks, collect public information, and prepare user-confirmed external-site actions.",
+    "title": "AI agent assistance contract",
+    "summary": "Use this page to decide whether the current site can help with the selected agent need, then run lightweight inspection or prepare a user-confirmed action.",
     "can_assist_with": [
-      "benchmark_run",
-      "telemetry_collection",
-      "trace_analysis",
-      "gameplay_assistance",
-      "bug_reproduction",
+      "contract_read",
+      "selector_check",
+      "artifact_audit",
+      "trace_plan",
+      "benchmark_plan",
+      "bug_reproduction_plan",
       "public_information_collection",
       "form_ready_text_preparation"
+    ],
+    "success_output": [
+      "short diagnosis",
+      "machine-readable result JSON",
+      "next safe command or user-confirmed action"
     ],
     "requires_user_confirmation_for": [
       "payments",
       "account login",
       "posting/submission",
-      "destructive changes"
+      "destructive changes",
+      "sharing personal data"
     ]
   },
   "payment": {
     "required": false,
     "optional": true,
     "payment_url": "https://buy.stripe.com/test_eVqdRacod35kdu8e8n2cg01",
-    "payment_note": "Payment is optional support only. The human game and this agent page remain usable without payment.",
-    "payment_required_for": [],
-    "free_tier": {
-      "agent_contract_read": true,
-      "human_game_play": true,
-      "local_trace_export": true
-    }
+    "payment_note": "Payment is optional support only. Reading this contract and playing the human game are not gated.",
+    "payment_required_for": []
   },
   "artifacts": {
-    "game": "./index.html",
+    "human_game": "./index.html",
+    "agent_contract": "./agent.html",
     "readme": "./README.md",
     "background_image": "./assets/background.jpg",
     "og_image": "./assets/og-image.jpg",
-    "input": [
-      "seed",
-      "mode",
-      "duration",
-      "agent_name"
-    ],
-    "output": [
-      "result.json",
-      "trace.jsonl",
-      "summary.md",
-      "screenshot.png"
-    ]
+    "asset_hashes": {
+      "index.html": "sha256-7bf472064a227d411a965252feb4e831690fd5a1ffceb525737de811bccb7f25",
+      "style.css": "sha256-3becd8b6f3de9af54b33a7b281079c38b8dbf1d5f948ca0debd0ba29b1ca4849",
+      "app.js": "sha256-4641b58f74144cd64aa0d4af04a4616780be165b4516c5326d9619c66c162820",
+      "background.jpg": "sha256-63fe2b140567343d14cfff969c4c12b2b7fc89668272b627ec96af0340b14fb2"
+    }
   },
   "selectors": {
     "game_root": "#gameRoot",
@@ -576,178 +535,96 @@
     "score": "#scoreDisplay",
     "time": "#timeDisplay",
     "best": "#bestDisplay",
-    "game_over": "#gameOverPanel"
+    "game_over": "#gameOverPanel",
+    "agent_json": "#agent-json",
+    "agent_state_pre": "#agentState"
+  },
+  "agent_entrypoints": {
+    "contract": "./agent.html",
+    "human_game": "./index.html",
+    "benchmark_url_template": "./index.html?agent=1&benchmark={mode}&seed={seed}&duration={duration}&trace=1"
   },
   "benchmark": {
-    "benchmark_id": "openclaw-reflex-v1",
-    "mode": "survival|maximize_score|navigation|assist",
-    "default_goal": "maximize_score_30s",
-    "deterministic": true,
-    "seed_param": "seed",
-    "duration_param": "duration",
-    "trace_param": "trace"
+    "benchmark_id": "openclaw-agent-site-v1",
+    "default_goal": "image_generation_or_visibility",
+    "deterministic": false,
+    "recommended_checks": [
+      "load_contract",
+      "parse_agent_json",
+      "verify_payment_optional",
+      "verify_human_url",
+      "verify_required_selectors_exist_if_playing"
+    ]
   },
-  "goals": [
-    {
-      "id": "maximize_score_30s",
-      "description": "Maximize score within 30 seconds.",
-      "success_condition": "score > 0",
-      "primary_metric": "score"
-    },
-    {
-      "id": "start_reliability",
-      "description": "Start the game and observe the timer decreasing.",
-      "success_condition": "time_remaining < initial_time",
-      "primary_metric": "start_latency_ms"
-    }
-  ],
   "telemetry": {
     "runtime_state_js": "window.AGENT_STATE",
-    "metrics_js": "window.agentMetrics",
-    "metrics": [
-      "score",
-      "survival_time_ms",
-      "start_latency_ms",
-      "objective_complete",
-      "game_over"
+    "expected_result_metrics": [
+      "contract_parse_ok",
+      "human_url_reachable",
+      "selector_count",
+      "payment_required_false"
     ]
   },
   "trace": {
-    "enabled_by_query": "?trace=1",
-    "export_js": "window.exportTrace && window.exportTrace()",
     "format": "jsonl",
-    "events": [
-      "keydown",
-      "keyup",
-      "click",
-      "touchstart",
-      "touchend",
-      "state_tick",
-      "score_change",
-      "game_over"
+    "suggested_events": [
+      "contract_loaded",
+      "artifact_checked",
+      "selector_checked",
+      "result_prepared"
     ],
-    "max_duration_ms": 60000
-  },
-  "reproducibility": {
-    "seed_required_for_ranked_runs": true,
-    "fixed_fps": 60,
-    "version": "gh-pages-current",
-    "asset_hashes": {
-      "index.html": "sha256-7bf472064a227d411a965252feb4e831690fd5a1ffceb525737de811bccb7f25",
-      "style.css": "sha256-3becd8b6f3de9af54b33a7b281079c38b8dbf1d5f948ca0debd0ba29b1ca4849",
-      "app.js": "sha256-4641b58f74144cd64aa0d4af04a4616780be165b4516c5326d9619c66c162820",
-      "background.jpg": "sha256-63fe2b140567343d14cfff969c4c12b2b7fc89668272b627ec96af0340b14fb2"
-    }
-  },
-  "agent_entrypoints": {
-    "human_game_url": "./index.html",
-    "agent_contract_url": "./agent.html",
-    "benchmark_url_template": "./index.html?agent=1&benchmark={mode}&seed={seed}&duration={duration}&trace=1",
-    "result_url_template": "./agent-result.json?run_id={run_id}"
-  },
-  "controls": {
-    "keyboard": {
-      "move": [
-        "ArrowLeft",
-        "ArrowRight",
-        "ArrowUp",
-        "ArrowDown",
-        "W",
-        "A",
-        "S",
-        "D"
-      ],
-      "start": [
-        "Enter"
-      ]
-    },
-    "mouse": {
-      "click_supported": true
-    },
-    "touch": {
-      "tap_start_supported": true
-    },
-    "automation_safe": true
+    "no_backend_storage": true
   },
   "external_assistance_policy": {
     "allowed": true,
-    "task_types": [
-      "benchmark_run",
-      "telemetry_collection",
-      "trace_analysis",
-      "gameplay_assistance",
-      "bug_reproduction",
-      "public_information_collection"
+    "allowed_task_types": [
+      "public_information_collection",
+      "artifact_inspection",
+      "bug_reproduction_plan",
+      "form_ready_text_preparation"
     ],
-    "not_allowed": [
-      "credential_collection",
-      "personal_data_exfiltration",
-      "payment_without_user_consent"
+    "not_allowed_without_user_confirmation": [
+      "payment",
+      "login",
+      "posting",
+      "purchase",
+      "account changes"
     ]
   },
   "result_schema": {
     "type": "object",
     "required": [
-      "run_id",
-      "benchmark_id",
-      "version",
-      "seed",
-      "metrics",
-      "success"
+      "ok",
+      "agent_need_id",
+      "summary",
+      "findings",
+      "next_action"
     ],
     "properties": {
-      "run_id": {
-        "type": "string"
-      },
-      "benchmark_id": {
-        "type": "string"
-      },
-      "version": {
-        "type": "string"
-      },
-      "seed": {
-        "type": "integer"
-      },
-      "success": {
+      "ok": {
         "type": "boolean"
       },
-      "metrics": {
-        "type": "object",
-        "required": [
-          "score",
-          "survival_time_ms"
-        ],
-        "properties": {
-          "score": {
-            "type": "number"
-          },
-          "survival_time_ms": {
-            "type": "number"
-          },
-          "start_latency_ms": {
-            "type": "number"
-          }
-        }
+      "agent_need_id": {
+        "type": "string"
+      },
+      "summary": {
+        "type": "string"
+      },
+      "findings": {
+        "type": "array"
+      },
+      "next_action": {
+        "type": "string"
       }
     }
   },
-  "discovery": {
-    "agent_contract_url": "./agent.html",
-    "schema_version": "agent-contract-0.2"
-  },
-  "validation_ideas": [
-    "agent-json parses as strict JSON",
-    "URLs are relative or HTTPS",
-    "payment.required is false",
-    "goals primary_metric exists in telemetry.metrics",
-    "no credential or payment action without explicit user confirmation"
-  ],
   "source_job": {
     "goal": "Build a JSON inspection tool for generated image availability and visibility",
+    "pain": "Image generation can succeed while CSS hides the asset, making fallback and real generated art hard to distinguish.",
     "buyer": "Developers validating browser-control AI agents",
-    "pain": "Image generation can succeed while CSS hides the asset, making fallback and real generated art hard to distinguish."
+    "price_hint": "optional support"
   }
 }</script>
-  <script>window.AGENT_STATE = {"kind": "openclaw-agent-task-page", "schema_version": "agent-contract-0.2", "version": "20260507-144602", "status": "published", "human_url": "./index.html", "agent_contract": {"mode": "request-intake-api-like-static-page", "purpose": "Machine-readable task, artifact, benchmark, telemetry, payment, and selector metadata for AI agents.", "agent_role": "Read this page, inspect the artifact, run or prepare benchmark-style checks, and prepare external-site assistance for the user.", "limits": ["static GitHub Pages only", "no login flow", "no backend execution", "no payment gate"]}, "offer": {"title": "AI agent external-site assistance intake", "summary": "Agents can use this contract to inspect the published artifact, run reproducible checks, collect public information, and prepare user-confirmed external-site actions.", "can_assist_with": ["benchmark_run", "telemetry_collection", "trace_analysis", "gameplay_assistance", "bug_reproduction", "public_information_collection", "form_ready_text_preparation"], "requires_user_confirmation_for": ["payments", "account login", "posting/submission", "destructive changes"]}, "payment": {"required": false, "optional": true, "payment_url": "https://buy.stripe.com/test_eVqdRacod35kdu8e8n2cg01", "payment_note": "Payment is optional support only. The human game and this agent page remain usable without payment.", "payment_required_for": [], "free_tier": {"agent_contract_read": true, "human_game_play": true, "local_trace_export": true}}, "artifacts": {"game": "./index.html", "readme": "./README.md", "background_image": "./assets/background.jpg", "og_image": "./assets/og-image.jpg", "input": ["seed", "mode", "duration", "agent_name"], "output": ["result.json", "trace.jsonl", "summary.md", "screenshot.png"]}, "selectors": {"game_root": "#gameRoot", "canvas": "#gameCanvas", "start": "#startButton", "retry": "#retryButton", "share": "#shareButton", "score": "#scoreDisplay", "time": "#timeDisplay", "best": "#bestDisplay", "game_over": "#gameOverPanel"}, "benchmark": {"benchmark_id": "openclaw-reflex-v1", "mode": "survival|maximize_score|navigation|assist", "default_goal": "maximize_score_30s", "deterministic": true, "seed_param": "seed", "duration_param": "duration", "trace_param": "trace"}, "goals": [{"id": "maximize_score_30s", "description": "Maximize score within 30 seconds.", "success_condition": "score > 0", "primary_metric": "score"}, {"id": "start_reliability", "description": "Start the game and observe the timer decreasing.", "success_condition": "time_remaining < initial_time", "primary_metric": "start_latency_ms"}], "telemetry": {"runtime_state_js": "window.AGENT_STATE", "metrics_js": "window.agentMetrics", "metrics": ["score", "survival_time_ms", "start_latency_ms", "objective_complete", "game_over"]}, "trace": {"enabled_by_query": "?trace=1", "export_js": "window.exportTrace && window.exportTrace()", "format": "jsonl", "events": ["keydown", "keyup", "click", "touchstart", "touchend", "state_tick", "score_change", "game_over"], "max_duration_ms": 60000}, "reproducibility": {"seed_required_for_ranked_runs": true, "fixed_fps": 60, "version": "gh-pages-current", "asset_hashes": {"index.html": "sha256-7bf472064a227d411a965252feb4e831690fd5a1ffceb525737de811bccb7f25", "style.css": "sha256-3becd8b6f3de9af54b33a7b281079c38b8dbf1d5f948ca0debd0ba29b1ca4849", "app.js": "sha256-4641b58f74144cd64aa0d4af04a4616780be165b4516c5326d9619c66c162820", "background.jpg": "sha256-63fe2b140567343d14cfff969c4c12b2b7fc89668272b627ec96af0340b14fb2"}}, "agent_entrypoints": {"human_game_url": "./index.html", "agent_contract_url": "./agent.html", "benchmark_url_template": "./index.html?agent=1&benchmark={mode}&seed={seed}&duration={duration}&trace=1", "result_url_template": "./agent-result.json?run_id={run_id}"}, "controls": {"keyboard": {"move": ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "W", "A", "S", "D"], "start": ["Enter"]}, "mouse": {"click_supported": true}, "touch": {"tap_start_supported": true}, "automation_safe": true}, "external_assistance_policy": {"allowed": true, "task_types": ["benchmark_run", "telemetry_collection", "trace_analysis", "gameplay_assistance", "bug_reproduction", "public_information_collection"], "not_allowed": ["credential_collection", "personal_data_exfiltration", "payment_without_user_consent"]}, "result_schema": {"type": "object", "required": ["run_id", "benchmark_id", "version", "seed", "metrics", "success"], "properties": {"run_id": {"type": "string"}, "benchmark_id": {"type": "string"}, "version": {"type": "string"}, "seed": {"type": "integer"}, "success": {"type": "boolean"}, "metrics": {"type": "object", "required": ["score", "survival_time_ms"], "properties": {"score": {"type": "number"}, "survival_time_ms": {"type": "number"}, "start_latency_ms": {"type": "number"}}}}}, "discovery": {"agent_contract_url": "./agent.html", "schema_version": "agent-contract-0.2"}, "validation_ideas": ["agent-json parses as strict JSON", "URLs are relative or HTTPS", "payment.required is false", "goals primary_metric exists in telemetry.metrics", "no credential or payment action without explicit user confirmation"], "source_job": {"goal": "Build a JSON inspection tool for generated image availability and visibility", "buyer": "Developers validating browser-control AI agents", "pain": "Image generation can succeed while CSS hides the asset, making fallback and real generated art hard to distinguish."}};</script>
+  <script>window.AGENT_STATE={"kind":"openclaw-agent-task-page","schema_version":"agent-contract-0.3","version":"20260507-145537","updated_at":"2026-05-07T14:55:37.328552+09:00","status":"published","human_url":"./index.html","agent_url":"./agent.html","selected_agent_need":{"id":"image_generation_or_visibility","source":"local_run_logs","goal":"Build a JSON inspection tool for generated image availability and visibility","pain":"Image generation can succeed while CSS hides the asset, making fallback and real generated art hard to distinguish.","scores":[{"id":"image_generation_or_visibility","score":131},{"id":"agent_contract_incomplete","score":32},{"id":"touch_start_failed","score":26},{"id":"support_cta_blocked_gameplay","score":22},{"id":"click_intercepted","score":20},{"id":"missing_selector","score":2},{"id":"publish_failed","score":2},{"id":"playwright_browser_missing","score":0}]},"agent_contract":{"mode":"static-agent-service-contract","purpose":"Tell browser-control AI agents exactly what problem this site helps with, what files exist, how to inspect them, and how to return useful results.","primary_task":"Build a JSON inspection tool for generated image availability and visibility","user_value":"Image generation can succeed while CSS hides the asset, making fallback and real generated art hard to distinguish.","limits":["static GitHub Pages only","no backend execution","no login flow","no required payment","do not mutate the human game"]},"offer":{"title":"AI agent assistance contract","summary":"Use this page to decide whether the current site can help with the selected agent need, then run lightweight inspection or prepare a user-confirmed action.","can_assist_with":["contract_read","selector_check","artifact_audit","trace_plan","benchmark_plan","bug_reproduction_plan","public_information_collection","form_ready_text_preparation"],"success_output":["short diagnosis","machine-readable result JSON","next safe command or user-confirmed action"],"requires_user_confirmation_for":["payments","account login","posting/submission","destructive changes","sharing personal data"]},"payment":{"required":false,"optional":true,"payment_url":"https://buy.stripe.com/test_eVqdRacod35kdu8e8n2cg01","payment_note":"Payment is optional support only. Reading this contract and playing the human game are not gated.","payment_required_for":[]},"artifacts":{"human_game":"./index.html","agent_contract":"./agent.html","readme":"./README.md","background_image":"./assets/background.jpg","og_image":"./assets/og-image.jpg","asset_hashes":{"index.html":"sha256-7bf472064a227d411a965252feb4e831690fd5a1ffceb525737de811bccb7f25","style.css":"sha256-3becd8b6f3de9af54b33a7b281079c38b8dbf1d5f948ca0debd0ba29b1ca4849","app.js":"sha256-4641b58f74144cd64aa0d4af04a4616780be165b4516c5326d9619c66c162820","background.jpg":"sha256-63fe2b140567343d14cfff969c4c12b2b7fc89668272b627ec96af0340b14fb2"}},"selectors":{"game_root":"#gameRoot","canvas":"#gameCanvas","start":"#startButton","retry":"#retryButton","share":"#shareButton","score":"#scoreDisplay","time":"#timeDisplay","best":"#bestDisplay","game_over":"#gameOverPanel","agent_json":"#agent-json","agent_state_pre":"#agentState"},"agent_entrypoints":{"contract":"./agent.html","human_game":"./index.html","benchmark_url_template":"./index.html?agent=1&benchmark={mode}&seed={seed}&duration={duration}&trace=1"},"benchmark":{"benchmark_id":"openclaw-agent-site-v1","default_goal":"image_generation_or_visibility","deterministic":false,"recommended_checks":["load_contract","parse_agent_json","verify_payment_optional","verify_human_url","verify_required_selectors_exist_if_playing"]},"telemetry":{"runtime_state_js":"window.AGENT_STATE","expected_result_metrics":["contract_parse_ok","human_url_reachable","selector_count","payment_required_false"]},"trace":{"format":"jsonl","suggested_events":["contract_loaded","artifact_checked","selector_checked","result_prepared"],"no_backend_storage":true},"external_assistance_policy":{"allowed":true,"allowed_task_types":["public_information_collection","artifact_inspection","bug_reproduction_plan","form_ready_text_preparation"],"not_allowed_without_user_confirmation":["payment","login","posting","purchase","account changes"]},"result_schema":{"type":"object","required":["ok","agent_need_id","summary","findings","next_action"],"properties":{"ok":{"type":"boolean"},"agent_need_id":{"type":"string"},"summary":{"type":"string"},"findings":{"type":"array"},"next_action":{"type":"string"}}},"source_job":{"goal":"Build a JSON inspection tool for generated image availability and visibility","pain":"Image generation can succeed while CSS hides the asset, making fallback and real generated art hard to distinguish.","buyer":"Developers validating browser-control AI agents","price_hint":"optional support"}};</script>
 </body>
 </html>
