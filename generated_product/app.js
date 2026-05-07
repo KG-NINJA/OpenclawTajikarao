@@ -534,8 +534,7 @@ init();
   const parseTrace = (input) => {
     const errors = [];
     const events = [];
-    const raw = Array.isArray(input) ? input : String(input || '').split(/?
-/).filter(Boolean);
+    const raw = Array.isArray(input) ? input : String(input || '').split('\n').map((line) => line.replace(/\r$/, '')).filter(Boolean);
     raw.forEach((item, index) => {
       try {
         const event = typeof item === 'string' ? JSON.parse(item) : item;
