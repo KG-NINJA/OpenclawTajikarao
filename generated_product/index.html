@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>遺跡バックグラウンド可視性テスト - 30秒スコアアタック</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./style.css" />
+  
+    <meta property="og:image" content="assets/background.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+  </head>
+  <body>
+    <main class="wrap">
+      <section class="topRow">
+        <div class="titleBlock">
+          <h1 class="title">可視性チェック：遺跡バックグラウンドを守れ</h1>
+          <p class="subtitle">
+            30秒間、<b>生成背景（遺跡）</b>が見える状態を維持しながら、光のキューブを集めてスコアを稼ぐ視覚検査ゲーム。
+          </p>
+        </div>
+        <div class="hud">
+          <div class="hudItem">
+            <div class="hudLabel">スコア</div>
+            <div class="hudValue" id="scoreDisplay">0</div>
+          </div>
+          <div class="hudItem">
+            <div class="hudLabel">残り</div>
+            <div class="hudValue"><span id="timeDisplay">30.0</span>s</div>
+          </div>
+          <div class="hudItem">
+            <div class="hudLabel">ベスト</div>
+            <div class="hudValue" id="bestDisplay">0</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="gameCard">
+        <div id="gameRoot" class="gameRoot" aria-label="game root">
+          <div class="bgLayer" aria-hidden="true"></div>
+          <div id="veilLayer" class="veilLayer" aria-hidden="true"></div>
+          <div class="uiLayer">
+            <div class="leftInfo">
+              <div class="pill">
+                <b>操作</b>：←→ / A D（PC）・スワイプ（スマホ）
+              </div>
+              <div class="pill">
+                <b>目的</b>：光を取る / 赤いノイズを避ける（ノイズで<b>可視性</b>が下がる）
+              </div>
+            </div>
+            <div class="rightControls">
+              <button id="startButton" class="btn primary" type="button">スタート</button>
+              <a id="shareButton" class="btn ghost" href="#" target="_blank" rel="noopener noreferrer">Xで共有</a>
+            </div>
+          </div>
+
+          <div id="gameCanvas" class="canvasLayer" aria-label="three canvas mount"></div>
+
+          <div id="gameOverPanel" class="bottomBar" aria-live="polite" hidden>
+            <div class="bottomLeft">
+              <span class="gameOverTag">終了</span>
+              <span class="mini">最終スコア：</span><span class="miniVal" id="finalScore">0</span>
+              <span class="mini">／ 可視性：</span><span class="miniVal" id="finalVis">100</span><span class="mini">%</span>
+            </div>
+            <div class="bottomRight">
+              <button id="retryButton" class="btn primary sm" type="button">もう一回</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="footNotes">
+        <p class="note">
+          視覚検査の狙い：背景が<strong>CSSレイヤーとして常に見えているか</strong>、キャンバスやCSSが隠していないかを30秒で確認。
+        </p>
+        <p class="note subtle">
+          ※任意サポート（Stripeチェックアウト）はREADMEに記載。ゲームUIには表示しません。
+        </p>
+      </section>
+    </main>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
