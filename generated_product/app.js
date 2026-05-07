@@ -545,6 +545,10 @@ init();
         errors.push({ index, error: String(err && err.message ? err.message : err) });
       }
     });
+    if (events.length > maxTrace) {
+      errors.push({ index: -1, error: `trace_too_large:${events.length}` });
+      return { events: events.slice(0, maxTrace), errors };
+    }
     return { events, errors };
   };
   const readState = () => {
