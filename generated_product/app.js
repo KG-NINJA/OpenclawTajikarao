@@ -514,10 +514,12 @@ function init() {
 
 init();
 
-/* OpenClaw agent runtime shim v1 */
+/* OpenClaw agent runtime shim v2 */
 (() => {
   const bootTs = performance.now();
   const trace = [];
+  let loadedReplay = [];
+  let failureState = null;
   const maxTrace = 4000;
   const q = (sel) => document.querySelector(sel);
   const n = (value, fallback = 0) => {
@@ -529,6 +531,23 @@ init();
     trace.push(event);
     if (trace.length > maxTrace) trace.shift();
   };
+  const parseTrace = (input) => {
+    const errors = [];
+    const events = [];
+    const raw = Array.isArray(input) ? input : String(input || '').split(/?
+/).filter(Boolean);
+    raw.forEach((item, index) => {
+      try {
+        const event = typeof item === 'string' ? JSON.parse(item) : item;
+        if (!event || typeof event !== 'object') throw new Error('event is not object');
+        if (typeof event.type !== 'string') throw new Error('missing type');
+        events.push(event);
+      } catch (err) {
+        errors.push({ index, error: String(err && err.message ? err.message : err) });
+      }
+    });
+    return { events, errors };
+  };
   const readState = () => {
     const timeText = q('#timeDisplay')?.textContent || '';
     const remaining = n(timeText, 0);
@@ -536,42 +555,30 @@ init();
     const gameOverEl = q('#gameOverPanel');
     const gameOver = Boolean(gameOverEl && !gameOverEl.hidden && getComputedStyle(gameOverEl).display !== 'none');
     const score = n(q('#scoreDisplay')?.textContent, 0);
-    return {
-      score,
-      hp: 1,
-      survival_time_ms: survival,
-      game_over: gameOver,
-      objective_complete: score > 0 || gameOver || remaining <= 0,
-      remaining_time_s: remaining,
-      best: n(q('#bestDisplay')?.textContent, 0),
-      runtime_state_available: true,
-      updated_at_ms: Math.round(performance.now())
-    };
+    if (gameOver && !failureState) failureState = remaining <= 0 ? 'timeout' : 'player_dead';
+    return { score, hp: failureState === 'player_dead' ? 0 : 1, survival_time_ms: survival, game_over: gameOver, objective_complete: score > 0 || gameOver || remaining <= 0, remaining_time_s: remaining, best: n(q('#bestDisplay')?.textContent, 0), runtime_state_available: true, trace_event_count: trace.length, loaded_replay_event_count: loadedReplay.length, failure_state: failureState, updated_at_ms: Math.round(performance.now()) };
   };
   window.agentState = readState();
   window.exportMetrics = () => {
     const s = readState();
-    return {
-      score: s.score,
-      accuracy: s.score > 0 ? 1 : 0,
-      reaction_ms: 0,
-      survival_time_ms: s.survival_time_ms,
-      objective_complete: s.objective_complete,
-      success: s.objective_complete,
-      payment_required_false: true
-    };
+    return { score: s.score, accuracy: s.score > 0 ? 1 : 0, reaction_ms: 0, survival_time_ms: s.survival_time_ms, objective_complete: s.objective_complete, success: s.objective_complete && !s.failure_state, failure_state: s.failure_state, trace_event_count: s.trace_event_count, runtime_state_available: s.runtime_state_available, payment_required_false: true };
   };
   window.exportTrace = () => trace.map((e) => JSON.stringify(e)).join('\n');
-  window.resetAgentTrace = () => { trace.length = 0; pushTrace('trace_reset'); };
+  window.loadTrace = (input) => {
+    const parsed = parseTrace(input);
+    loadedReplay = parsed.events;
+    if (parsed.errors.length) failureState = 'invalid_trace';
+    pushTrace('trace_loaded', { event_count: loadedReplay.length, error_count: parsed.errors.length });
+    window.agentState = readState();
+    return { ok: parsed.errors.length === 0, event_count: loadedReplay.length, errors: parsed.errors };
+  };
+  window.resetAgentTrace = () => { trace.length = 0; loadedReplay = []; failureState = null; pushTrace('trace_reset'); window.agentState = readState(); };
   ['keydown', 'keyup', 'click', 'pointerdown', 'pointerup', 'touchstart', 'touchend'].forEach((type) => {
     window.addEventListener(type, (event) => {
       const target = event.target && event.target.id ? `#${event.target.id}` : (event.target && event.target.tagName ? event.target.tagName.toLowerCase() : 'unknown');
       pushTrace(type, { key: event.key || undefined, target });
     }, { passive: true, capture: true });
   });
-  setInterval(() => {
-    window.agentState = readState();
-    pushTrace('state_tick', window.agentState);
-  }, 100);
+  setInterval(() => { window.agentState = readState(); pushTrace('state_tick', window.agentState); }, 100);
 })();
 
