@@ -561,8 +561,7 @@ init();
       payment_required_false: true
     };
   };
-  window.exportTrace = () => trace.map((e) => JSON.stringify(e)).join('
-');
+  window.exportTrace = () => trace.map((e) => JSON.stringify(e)).join('\n');
   window.resetAgentTrace = () => { trace.length = 0; pushTrace('trace_reset'); };
   ['keydown', 'keyup', 'click', 'pointerdown', 'pointerup', 'touchstart', 'touchend'].forEach((type) => {
     window.addEventListener(type, (event) => {
