@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AI Agent Fix API | 500円</title>
-  <meta name="description" content="AI agent / Codex / OpenClaw / Stripe / Telegramの詰まりを500円で1件診断。PayPal支払い後、Telegramで相談内容を送るだけ。" />
+  <meta name="description" content="AI agent / Codex / OpenClaw / Stripe / Telegramの詰まりを500円で1件診断。Stripe支払い後、Telegramで相談内容を送るだけ。" />
   <style>
     :root { color-scheme: light; --ink:#191919; --muted:#5f6368; --line:#d7d7d7; --accent:#0f766e; --bg:#fbfbf8; --panel:#fff; }
     * { box-sizing: border-box; }
@@ -38,7 +38,7 @@
     <p class="lead">Codex、OpenClaw、Stripe、Telegram、VPS、Node/APIのエラーを1件だけ診断し、原因候補と次に打つコマンドをJSON風に返します。</p>
     <div class="price">AI Automation Fix: 500円 / 1 task</div>
     <div class="actions">
-      <a id="buy" class="cta" href="https://paypal.me/KGNINJA/500JPY">PayPalで500円を支払う</a>
+      <a id="buy" class="cta" href="https://buy.stripe.com/14AaEWcbm03W1OsaWD2Ji00">Stripeで500円を支払う</a>
       <button class="cta secondary" type="button" id="copyRequest">相談文をコピー</button>
     </div>
     <p class="note">支払い後、下の相談文をTelegramへ送ってください。APIキー、OAuthトークン、パスワードは送らないでください。</p>
@@ -46,7 +46,7 @@
     <section>
       <h2>購入後の流れ</h2>
       <ul class="steps">
-        <li>PayPalで500円を支払う</li>
+        <li>Stripeで500円を支払う</li>
         <li>下の相談文をコピーする</li>
         <li>Telegramで「支払った + 相談内容」を送る</li>
         <li>24時間以内に原因候補、次のコマンド、注意点を返答</li>
@@ -75,7 +75,7 @@
     <section>
       <h2>Telegramに送る相談文</h2>
       <div class="box">
-        <textarea id="requestText">PayPalで500円支払いました。
+        <textarea id="requestText">Stripeで500円支払いました。
 
 相談内容:
 

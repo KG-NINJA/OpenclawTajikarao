@@ -13,7 +13,7 @@ AI agent / Codex / OpenClaw / Stripe / Telegram連携で詰まったログを500
 - 壊さないための注意点
 
 購入はこちら:
-https://paypal.me/KGNINJA/500JPY
+https://buy.stripe.com/14AaEWcbm03W1OsaWD2Ji00
 
 相談ページ:
 https://kg-ninja.github.io/OpenclawTajikarao/mini-diagnosis/

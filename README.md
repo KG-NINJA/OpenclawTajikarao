@@ -4,7 +4,7 @@
 
 AI agent / Codex / OpenClaw / Stripe / Telegram / VPS issues can be diagnosed as a 500 JPY paid task.
 
-- Buy: https://paypal.me/KGNINJA/500JPY
+- Buy: https://buy.stripe.com/14AaEWcbm03W1OsaWD2Ji00
 - Intake page: https://kg-ninja.github.io/OpenclawTajikarao/mini-diagnosis/
 - Delivery: send the paid task details through Telegram using the page template
 - Output: likely cause, next commands, risk notes, and required follow-up evidence
