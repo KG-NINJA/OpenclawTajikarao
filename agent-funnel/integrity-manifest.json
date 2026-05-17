@@ -1,0 +1,27 @@
+{
+  "artifact": "KGNINJA Agent Funnel",
+  "originator": "KGNINJA",
+  "algorithm": "sha256",
+  "files": [
+    {
+      "file": "agent.json",
+      "sha256": "e7573efb43eff1444c65fd17906e585e5725a8daf6727d6d4c8f9b677bc5c1b6"
+    },
+    {
+      "file": "catalog.json",
+      "sha256": "a04259712cf48977abb833fd8a11f13450260aabff66e1468447363951960ee3"
+    },
+    {
+      "file": "creator-provenance.json",
+      "sha256": "108d3a1f9a2c9b4b173827be3d9234253f152935a7a20f1e10eb1e4b9ffec1cc"
+    },
+    {
+      "file": "index.html",
+      "sha256": "75d8a25758bfa21181d2970cdcb677546bf3c3b635ea55c747613b8423ced912"
+    },
+    {
+      "file": "llms.txt",
+      "sha256": "f2aebde4dedf94faebd1f1393b5dd5cfac0cdf395700a4221d60cee033dcb4a9"
+    }
+  ]
+}
