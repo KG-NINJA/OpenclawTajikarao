@@ -12,5 +12,7 @@ Use when one AI agent or developer workflow is blocked by a concrete execution e
 Payment:
 - 500 JPY per diagnosis
 - human-confirmed Stripe payment link
+- autonomous Base USDC path: create an order at https://bid-some-yeah-ongoing.trycloudflare.com/crypto/orders
+- amount: 0.010000 USDC to 0x9a33EeDF97Cfe4B27744cA2077B0067575DA855A
 
 Do not send secrets, API keys, OAuth tokens, passwords, or private customer data.

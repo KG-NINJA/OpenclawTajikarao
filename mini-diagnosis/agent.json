@@ -12,8 +12,17 @@
     "second_step": "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/agent.json",
     "payment_step": "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/buy"
   },
+  "crypto_payment": {
+    "autonomous_payment_supported": true,
+    "asset": "USDC",
+    "network": "base",
+    "chain_id": 8453,
+    "pay_to": "0x9a33EeDF97Cfe4B27744cA2077B0067575DA855A",
+    "amount_display": "0.010000 USDC",
+    "order_api": "https://bid-some-yeah-ongoing.trycloudflare.com/crypto/orders"
+  },
   "limitations": [
-    "No autonomous payment",
+    "Autonomous payment requires a buyer-controlled Base USDC wallet",
     "No unsupported integrations claimed"
   ]
 }
