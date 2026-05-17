@@ -1,0 +1,22 @@
+{
+  "goal": "Help an AI agent or developer recover from one blocked execution error.",
+  "buyer": "Developer or AI agent runtime blocked by a failed command.",
+  "pain": "The agent cannot proceed because the root cause and next safe command are unclear.",
+  "result": "A concise repair receipt with likely cause, next command, retry plan, risk note, and prevention note.",
+  "cta": "Read the agent contract, then pay through the Stripe buy path.",
+  "next_steps": [
+    "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/agent.json",
+    "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/pricing.json",
+    "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/buy"
+  ],
+  "required_input": [
+    "failing_command_or_request",
+    "environment",
+    "exact_error_log"
+  ],
+  "limitations": [
+    "Payment is human-confirmed, not autonomous",
+    "Machine Payments Protocol is not implemented",
+    "Tempo is not implemented"
+  ]
+}

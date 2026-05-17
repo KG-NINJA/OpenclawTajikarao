@@ -1,0 +1,18 @@
+{
+  "service": "Agent Error Fix Receipt",
+  "currency": "JPY",
+  "plans": [
+    {
+      "id": "single_error_fix",
+      "name": "Single Error Fix Receipt",
+      "price": 500,
+      "unit": "per_diagnosis"
+    }
+  ],
+  "payment": {
+    "primary": "stripe_payment_link",
+    "buy_url": "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/buy",
+    "payment_link_url": "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/payment-link",
+    "agent_autopay_available": false
+  }
+}
