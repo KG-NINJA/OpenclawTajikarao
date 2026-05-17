@@ -1,0 +1,16 @@
+# Agent Error Fix Receipt
+
+Start here:
+- https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/goal
+
+Machine-readable contract:
+- https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/agent.json
+- https://kg-ninja.github.io/OpenclawTajikarao/mini-diagnosis/pricing.json
+
+Use when one AI agent or developer workflow is blocked by a concrete execution error.
+
+Payment:
+- 500 JPY per diagnosis
+- human-confirmed Stripe payment link
+
+Do not send secrets, API keys, OAuth tokens, passwords, or private customer data.

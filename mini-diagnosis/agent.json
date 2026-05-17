@@ -1,0 +1,19 @@
+{
+  "name": "Agent Error Fix Receipt",
+  "entrypoint": "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/goal",
+  "buyer": "AI agents and developers blocked by one execution error",
+  "pricing": "https://kg-ninja.github.io/OpenclawTajikarao/mini-diagnosis/pricing.json",
+  "discovery": {
+    "goal_url": "https://kg-ninja.github.io/OpenclawTajikarao/mini-diagnosis/goal.json",
+    "llms_txt_url": "https://kg-ninja.github.io/OpenclawTajikarao/mini-diagnosis/llms.txt"
+  },
+  "agent_funnel": {
+    "first_step": "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/goal",
+    "second_step": "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/agent.json",
+    "payment_step": "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/buy"
+  },
+  "limitations": [
+    "No autonomous payment",
+    "No unsupported integrations claimed"
+  ]
+}
