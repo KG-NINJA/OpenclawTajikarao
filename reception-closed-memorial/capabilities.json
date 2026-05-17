@@ -1,0 +1,33 @@
+{
+  "service": "Reception Closed Memorial",
+  "capabilities": [
+    "paid_memorial_access",
+    "commerce_metadata"
+  ],
+  "pricing": {
+    "amount_usd": 1,
+    "payment_method": "x402 USDC on Base"
+  },
+  "fulfillment": {
+    "endpoint": "/memorial",
+    "required_fields": []
+  },
+  "payment_capabilities": {
+    "stripe_payment_link": "not_primary",
+    "stripe_link_checkout": "not_primary",
+    "usdc_base_receive": "active_via_x402",
+    "x402": "active",
+    "tempo_mpp": "not_implemented_metadata_only",
+    "agent_autopay": true
+  },
+  "demo_capabilities": {
+    "demo_purchase_flow": "active",
+    "demo_payment_required": false,
+    "demo_receipt": "active",
+    "machine_readable_demo_proof": true
+  },
+  "collectible_artifact": true,
+  "numbered_receipt": true,
+  "persistent_holder_id": true,
+  "historical_participation_record": true
+}

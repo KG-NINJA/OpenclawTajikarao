@@ -1,0 +1,41 @@
+{
+  "service": "Reception Closed Memorial",
+  "current_status": "human_confirmed_and_x402_machine_payment",
+  "price": {
+    "amount": 1,
+    "currency": "USD",
+    "unit": "per_access"
+  },
+  "current_methods": [
+    {
+      "id": "x402_base_usdc",
+      "type": "http_402_payment_required",
+      "network": "base",
+      "status": "active",
+      "agent_autopay": true,
+      "endpoint": "/memorial",
+      "price": "$1.00",
+      "asset": "USDC"
+    }
+  ],
+  "planned_methods": [
+    {
+      "id": "tempo_mpp",
+      "type": "machine_payment_protocol",
+      "status": "planned_metadata_only",
+      "agent_autopay": false,
+      "note": "Tempo or MPP payment execution is not implemented."
+    }
+  ],
+  "safety": {
+    "do_not_send": [
+      "seed phrases",
+      "private keys",
+      "API keys",
+      "passwords",
+      "private tokens",
+      "personal information"
+    ],
+    "payment_verification": "x402_facilitator_confirmed"
+  }
+}

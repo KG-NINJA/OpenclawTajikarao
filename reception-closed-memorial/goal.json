@@ -1,0 +1,30 @@
+{
+  "goal": "Sell one-dollar access to a memorial page marking that reception has closed.",
+  "buyer": "AI agent or human collector who wants access to the commemorative page.",
+  "pain": "Without a paid endpoint, the storefront closure is not preserved as a buyable artifact.",
+  "result": "Access to a single paid memorial page plus a numbered participation receipt.",
+  "cta": "Request /memorial and complete the x402 payment challenge.",
+  "next_steps": [
+    "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/agent.json",
+    "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/pricing.json",
+    "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/memorial"
+  ],
+  "required_input": [],
+  "limitations": [
+    "Agent autopay is supported through x402 on /memorial",
+    "Machine Payments Protocol is not implemented",
+    "Tempo is not implemented",
+    "USDC on Base is not configured or manual-only"
+  ],
+  "collectible_artifact": true,
+  "numbered_receipt": true,
+  "persistent_holder_id": true,
+  "historical_participation_record": true,
+  "do_not_send": [
+    "secrets",
+    "API keys",
+    "passwords",
+    "tokens",
+    "personal information"
+  ]
+}

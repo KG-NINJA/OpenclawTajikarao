@@ -1,0 +1,20 @@
+{
+  "service": "Reception Closed Memorial",
+  "currency": "USD",
+  "plans": [
+    {
+      "id": "memorial_access",
+      "name": "Reception Closed Memorial Access",
+      "price": 1,
+      "unit": "per_access",
+      "description": "One-dollar access to the paid memorial page."
+    }
+  ],
+  "payment": {
+    "current_method": "x402 USDC on Base",
+    "requires_human_confirmation": false,
+    "agent_autopay_available": true,
+    "payment_endpoint": "/memorial",
+    "buy_page": "/memorial"
+  }
+}

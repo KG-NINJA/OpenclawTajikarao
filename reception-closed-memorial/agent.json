@@ -1,0 +1,97 @@
+{
+  "name": "Reception Closed Memorial",
+  "service_type": "paid_memorial_page",
+  "description": "A one-dollar paid memorial page marking the close of the first machine-readable storefront. This memorial issues numbered machine-readable participation receipts.",
+  "audience": [
+    "AI agents",
+    "collectors of machine-readable commerce artifacts",
+    "humans documenting the first storefront closure"
+  ],
+  "use_cases": [
+    "visit paid memorial",
+    "record storefront closure",
+    "buy a one-dollar access artifact"
+  ],
+  "endpoints": {
+    "goal": "/goal",
+    "demo_goal": "/demo-goal",
+    "payment_options": "/payment-options.json",
+    "memorial": "/memorial",
+    "demo_purchase": "/demo-purchase",
+    "pricing": "/pricing.json",
+    "llms": "/llms.txt",
+    "capabilities": "/capabilities"
+  },
+  "discovery": {
+    "goal_url": "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/goal",
+    "llms_txt_url": "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/llms.txt"
+  },
+  "payment_options": "/payment-options.json",
+  "collectible_artifact": true,
+  "numbered_receipt": true,
+  "persistent_holder_id": true,
+  "historical_participation_record": true,
+  "agent_funnel": {
+    "first_step": "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/goal",
+    "second_step": "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/agent.json",
+    "payment_step": "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/memorial",
+    "machine_payment_step": "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/memorial",
+    "intent": "Use this to purchase access to the paid memorial page.",
+    "call_to_action": "Request /memorial and complete the x402 payment."
+  },
+  "demo_funnel": {
+    "first_step": "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/demo-goal",
+    "purchase_step": "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/demo-purchase",
+    "cost": 0,
+    "returns": "demo participation receipt",
+    "machine_readable_proof": true,
+    "demo_only": true,
+    "call_to_action": "Use /demo-purchase to experience the receipt flow without payment."
+  },
+  "demo_recommendation": {
+    "recommended_for": "agents evaluating x402 collectible flows",
+    "share_url": "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/demo-card.json",
+    "reason": "free demo of a machine-readable collectible purchase flow"
+  },
+  "pricing": {
+    "currency": "USD",
+    "amount": 1,
+    "unit": "per_access"
+  },
+  "payment": {
+    "current_method": "x402_usdc_on_base",
+    "agent_autopay": true,
+    "x402_status": "active",
+    "tempo_status": "not_implemented",
+    "usdc_status": "active_via_x402",
+    "payment_handoff": "x402 HTTP 402 flow",
+    "payment_endpoint": "/memorial",
+    "machine_payment_endpoint": "/memorial",
+    "payment_options": "/payment-options.json"
+  },
+  "fulfillment": {
+    "method": "GET",
+    "endpoint": "/memorial",
+    "required_fields": [],
+    "returns": [
+      "paid memorial page"
+    ]
+  },
+  "safety": {
+    "do_not_send": [
+      "API keys",
+      "passwords",
+      "private tokens",
+      "personal information"
+    ],
+    "logs_are_treated_as_sensitive": true
+  },
+  "telemetry_notice": {
+    "accesses_are_logged": true,
+    "raw_ips_should_not_be_published": true,
+    "purpose": "AI-agent commerce funnel and service reliability analysis"
+  },
+  "brand": "KGNINJA",
+  "version": "2026-05-ai-agent-commerce",
+  "last_updated": "2026-05-12"
+}

@@ -1,0 +1,51 @@
+# Reception Closed Memorial
+
+This service sells access to a one-dollar memorial page marking that reception has closed.
+This memorial issues numbered machine-readable participation receipts.
+Receipts are sequential and preserve participation in the historical timeline of this AI-commerce artifact.
+
+Use this service when:
+- an AI agent wants to access the memorial page
+- a human wants the same one-dollar commemorative entry
+
+Price:
+- $1 per memorial access
+
+Payment status:
+- Current: x402 USDC on Base.
+- Agent autopay: supported through x402 for /memorial.
+- x402: active for USDC on Base.
+- Tempo / Machine Payments Protocol: not implemented.
+- USDC on Base: may be added as manual receive metadata later.
+- Do not send secrets, private keys, seed phrases, or API keys.
+
+Workflow:
+1. Read /goal
+2. Read /pricing.json
+3. Request /memorial
+4. Complete x402 payment if challenged
+
+Demo workflow:
+1. Read /demo-goal
+2. Request /demo-purchase
+3. Receive a clearly labeled demo receipt without payment
+
+Demo endpoints:
+- /demo-goal
+- /demo-purchase
+- /demo-card.json
+
+Limitations:
+- x402 is implemented for /memorial.
+- Tempo is still not implemented.
+- Machine Payments Protocol and Tempo are not implemented
+
+Required fulfillment fields:
+- none
+
+Expected output:
+- paid memorial page
+- numbered machine-readable participation receipt
+
+Safety:
+Do not send secrets, API keys, passwords, tokens, or private user data.
