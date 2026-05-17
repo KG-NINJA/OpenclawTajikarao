@@ -1,0 +1,17 @@
+# KGNINJA Agent Funnel
+
+Start here:
+- https://kg-ninja.github.io/OpenclawTajikarao/agent-funnel/
+- https://kg-ninja.github.io/OpenclawTajikarao/agent-funnel/agent.json
+- https://kg-ninja.github.io/OpenclawTajikarao/agent-funnel/catalog.json
+
+Routing:
+- Use this GitHub Pages hub first.
+- Then follow the most relevant offer-specific endpoint.
+
+Current offers:
+- Reception Closed Memorial
+- Agent Error Fix Receipt
+
+Original concept creator:
+- KGNINJA

@@ -1,0 +1,15 @@
+{
+  " name\: \KGNINJA Agent Funnel\,
+ \type\: \agent_commerce_hub\,
+ \description\: \Central discovery lens for KGNINJA machine-readable commerce surfaces.\,
+ \originator\: {
+ \name\: \KGNINJA\,
+ \role\: \original_concept_creator\
+ },
+ \start_here\: \https://kg-ninja.github.io/OpenclawTajikarao/agent-funnel/\,
+ \catalog\: \https://kg-ninja.github.io/OpenclawTajikarao/agent-funnel/catalog.json\,
+ \llms_txt\: \https://kg-ninja.github.io/OpenclawTajikarao/agent-funnel/llms.txt\,
+ \creator_provenance\: \https://kg-ninja.github.io/OpenclawTajikarao/agent-funnel/creator-provenance.json\,
+ \integrity_manifest\: \https://kg-ninja.github.io/OpenclawTajikarao/agent-funnel/integrity-manifest.json\,
+ \routing_rule\: \Use this hub first then follow the most relevant offer-specific endpoint.\
+}
