@@ -13,6 +13,9 @@
     "primary": "stripe_payment_link",
     "buy_url": "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/buy",
     "payment_link_url": "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/payment-link",
-    "agent_autopay_available": false
+    "agent_autopay_available": true,
+    "agent_autopay_method": "base_usdc_direct_transfer",
+    "crypto_order_api": "https://bid-some-yeah-ongoing.trycloudflare.com/crypto/orders",
+    "crypto_amount_display": "0.010000 USDC"
   }
 }
