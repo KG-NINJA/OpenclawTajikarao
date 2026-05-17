@@ -1,22 +1,22 @@
 {
- \hub\: \KGNINJA Agent Funnel\,
- \offers\: [
- {
- \id\: \reception_closed_memorial\,
- \label\: \Reception Closed Memorial\,
- \kind\: \collectible_paid_artifact\,
- \goal\: \https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/goal\,
- \demo_goal\: \https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/demo-goal\,
- \agent\: \https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/agent.json\,
- \pages_mirror\: \https://kg-ninja.github.io/OpenclawTajikarao/reception-closed-memorial/agent.json\
- },
- {
- \id\: \agent_error_fix_receipt\,
- \label\: \Agent Error Fix Receipt\,
- \kind\: \paid_service\,
- \goal\: \https://kg-ninja.github.io/OpenclawTajikarao/mini-diagnosis/goal.json\,
- \agent\: \https://kg-ninja.github.io/OpenclawTajikarao/mini-diagnosis/agent.json\,
- \llms\: \https://kg-ninja.github.io/OpenclawTajikarao/mini-diagnosis/llms.txt\
- }
- ]
+  "hub": "KGNINJA Agent Funnel",
+  "offers": [
+    {
+      "id": "reception_closed_memorial",
+      "label": "Reception Closed Memorial",
+      "kind": "collectible_paid_artifact",
+      "goal": "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/goal",
+      "demo_goal": "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/demo-goal",
+      "agent": "https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/agent.json",
+      "pages_mirror": "https://kg-ninja.github.io/OpenclawTajikarao/reception-closed-memorial/agent.json"
+    },
+    {
+      "id": "agent_error_fix_receipt",
+      "label": "Agent Error Fix Receipt",
+      "kind": "paid_service",
+      "goal": "https://kg-ninja.github.io/OpenclawTajikarao/mini-diagnosis/goal.json",
+      "agent": "https://kg-ninja.github.io/OpenclawTajikarao/mini-diagnosis/agent.json",
+      "llms": "https://kg-ninja.github.io/OpenclawTajikarao/mini-diagnosis/llms.txt"
+    }
+  ]
 }
