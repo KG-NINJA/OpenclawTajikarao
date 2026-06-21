@@ -29,7 +29,8 @@
         <p>Paste your build output → get your next fix instantly. This is not just analysis. It tells you what to change first, how much time it saves, and what that delay is costing you in dollars.</p>
         <div class="actions">
           <button class="btn" id="sampleBtn">Load Sample</button>
-          <a class="btn gold" href="https://buymeacoffee.com/kgninja" target="_blank" rel="noreferrer">Unlock Fix ($9)</a>
+          <a class="btn gold" href="https://buymeacoffee.com/kgninja" target="_blank" rel="noreferrer">Pay $9 via BuyMeACoffee</a>
+          <a class="btn secondary" href="mailto:fuwafuwow@gmail.com?subject=Go%20Build%20Pulse%20manual%20review&body=I%20paid%20%249%20via%20BuyMeACoffee.%0AReceipt%20or%20payment%20reference%3A%0AReply%20email%3A%0ARepo%20URL%3A%0ABuild%20logs%20with%20secrets%20removed%3A%0AGoal%3A">Send receipt for a tailored fix review</a>
           <a class="btn" href="https://agentos-revenue-cloudflare.fuwafuwow.workers.dev/buy" target="_blank" rel="noreferrer">AI agent checkout: verified x402 diagnostic API</a>
         </div>
       </div>
@@ -68,7 +69,7 @@
         </div>
         <div class="actions">
           <button class="btn" id="analyzeBtn">Analyze</button>
-          <button class="btn secondary" id="unlockBtn">Unlock Fix ($9)</button>
+          <button class="btn secondary" id="unlockBtn">Preview local recommendation</button>
         </div>
       </div>
 
@@ -81,7 +82,7 @@
         <div class="premium-gate">
           <div id="nextFix" class="hl">
             <strong>Your Next Fix</strong>
-            <p>Premium unlock required.</p>
+            <p>Free analysis identifies the bottleneck. A paid manual review adds a tailored next-fix plan after payment confirmation.</p>
           </div>
           <div id="fixScriptWrap" class="hidden-premium" style="margin-top:12px">
             <h3>Generate Fix Script</h3>
@@ -132,7 +133,7 @@ document.getElementById('savedPerRun').textContent=seconds(timeSavedRun);
 document.getElementById('savedPerDay').textContent=timeSavedDay.toFixed(1)+'m';
 document.getElementById('usdMonth').textContent=money(usdMonth);
 document.getElementById('impactLine').textContent=`You are losing about ${seconds(top.sec)} per run on ${top.name}. At ${builds} builds/day and $${hourly}/hr, this bottleneck alone looks like ${money(usdMonth)}/month of wasted engineering time.`;
-if(premium){document.getElementById('nextFix').innerHTML=`<strong>Your Next Fix</strong><p>${rec.text}</p><p><strong>Exact recommendation:</strong> ${top.name.includes('./')?'Split or isolate the slow package and measure it separately.':'Run a targeted build/test command on the slowest step first.'}</p>`;document.getElementById('fixScriptWrap').classList.remove('hidden-premium');document.getElementById('fixScript').textContent=rec.script;} else {document.getElementById('nextFix').innerHTML=`<strong>Your Next Fix</strong><p>Premium unlock required. Analysis says <strong>${top.name}</strong> is the first place to fix.</p><p><a class="btn gold" href="https://buymeacoffee.com/kgninja" target="_blank" rel="noreferrer">Unlock Fix ($9)</a></p>`;document.getElementById('fixScriptWrap').classList.add('hidden-premium');}
+if(premium){document.getElementById('nextFix').innerHTML=`<strong>Your Next Fix</strong><p>${rec.text}</p><p><strong>Exact recommendation:</strong> ${top.name.includes('./')?'Split or isolate the slow package and measure it separately.':'Run a targeted build/test command on the slowest step first.'}</p>`;document.getElementById('fixScriptWrap').classList.remove('hidden-premium');document.getElementById('fixScript').textContent=rec.script;} else {document.getElementById('nextFix').innerHTML=`<strong>Your Next Fix</strong><p>Premium unlock required. Analysis says <strong>${top.name}</strong> is the first place to fix.</p><p><a class="btn gold" href="mailto:fuwafuwow@gmail.com?subject=Go%20Build%20Pulse%20manual%20review&body=I%20paid%20%249%20via%20BuyMeACoffee.%0AReceipt%20or%20payment%20reference%3A%0AReply%20email%3A%0ARepo%20URL%3A%0ABuild%20logs%20with%20secrets%20removed%3A%0AGoal%3A">Send $9 payment receipt for a tailored review</a></p>`;document.getElementById('fixScriptWrap').classList.add('hidden-premium');}
 const rankedWrap=document.getElementById('rankedSteps');rankedWrap.innerHTML='';ranked.forEach((item,i)=>{const div=document.createElement('div');div.className='item';div.innerHTML=`<div class="rank">${i+1}</div><div><strong>${item.name}</strong><div class="note">${((item.sec/total)*100).toFixed(0)}% of total observed delay</div></div><div>${seconds(item.sec)}</div>`;rankedWrap.appendChild(div);});
 const comp=document.getElementById('comparison');comp.innerHTML='';if(after.length){const map=new Map(after.map(x=>[x.name,x.sec]));ranked.slice(0,5).forEach(item=>{const afterSec=map.get(item.name);if(afterSec==null)return;const delta=item.sec-afterSec;const div=document.createElement('div');div.className='item';div.innerHTML=`<div class="rank">↺</div><div><strong>${item.name}</strong><div class="note">Before ${seconds(item.sec)} → After ${seconds(afterSec)}</div></div><div class="${delta>=0?'money':''}">${delta>=0?'-'+seconds(delta):'+'+seconds(Math.abs(delta))}</div>`;comp.appendChild(div);});if(!comp.innerHTML)comp.innerHTML='<p class="note">No matching steps between baseline and after logs.</p>';} else {comp.innerHTML='<p class="note">Add after logs to unlock before/after comparison.</p>';}
 }
